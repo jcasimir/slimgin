@@ -29,7 +29,7 @@ class CustomerTest < Minitest::Test
   def test_it_can_return_its_created_at_time_as_timestamp
     customer = Customer.new("1", "Joey", "Ondricka", "2015-03-27 14:15:09 UTC", "2012-03-27 14:54:09 UTC")
 
-    assert_equal customer.created_at.class, Time
+    assert_kind_of Time, customer.created_at
   end
 
   def test_it_can_return_its_created_at_time_as_string
@@ -41,7 +41,7 @@ class CustomerTest < Minitest::Test
   def test_it_can_return_its_updated_at_time_as_timestamp
     customer = Customer.new("1", "Joey", "Ondricka", "2015-03-27 14:15:09 UTC", "2012-03-27 14:54:09 UTC")
 
-    assert_equal customer.updated_at.class, Time
+    assert_kind_of Time, customer.updated_at
   end
 
   def test_it_can_return_its_updated_at_time_as_string
