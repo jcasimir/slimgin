@@ -22,6 +22,7 @@ class Repository
     database.each do |id, attributes|
       out[id] = attributes if attributes.send(key) == value
     end
+    out
   end
 
   def load_db

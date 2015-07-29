@@ -73,4 +73,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_equal "shipped", invoice.status
   end
+
+  def test_find_does_not_return_what_it_is_not_searching_for
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    invoices = invoice_repo.find_all_by(status: "in transit")
+
+    assert_equal 0, invoices.length
+  end
 end
