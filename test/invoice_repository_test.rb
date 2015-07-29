@@ -97,4 +97,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_equal 1, invoices.length
   end
+
+  def test_find_all_by_returns_empty_hash_if_no_findings
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    invoices = invoice_repo.find_all_by(customer_id: "666")
+
+    assert_equal({}, invoices)
+  end
 end
