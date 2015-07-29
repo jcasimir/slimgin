@@ -56,4 +56,12 @@ class InvoiceRepositoryTest < Minitest::Test
     assert random.values.length == 1
     assert_kind_of Invoice, random.values[0]
   end
+
+  def test_it_can_fetch_by_attribute
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    invoices = invoice_repo.find_all_by(merchant_id: "1")
+
+    assert_kind_of Hash, invoices
+  end
 end

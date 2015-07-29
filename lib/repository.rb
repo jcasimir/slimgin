@@ -15,6 +15,10 @@ class Repository
     hash = {id => database[id]}
   end
 
+  def find_all_by attribute
+    {}
+  end
+
   def load_db
     db = {}
     CSV.foreach filename, :headers => true do |row|
