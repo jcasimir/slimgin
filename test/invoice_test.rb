@@ -19,4 +19,10 @@ class InvoiceTest < Minitest::Test
 
     assert_equal invoice.customer_id, "1"
   end
+
+  def test_it_has_a_merchant_id
+    invoice = Invoice.new nil, {merchant_id: "123"}
+
+    assert_equal invoice.merchant_id, "123"
+  end
 end
