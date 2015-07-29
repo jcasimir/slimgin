@@ -10,7 +10,8 @@ class DataInstance
   def attributes
     out = {}
     instance_variables.each do |name|
-      out[name] = instance_variable_get name
+      non_instance_name = name.to_s.delete("@").to_sym
+      out[non_instance_name] = instance_variable_get name
     end
     out
   end

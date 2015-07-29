@@ -49,4 +49,10 @@ class InvoiceTest < Minitest::Test
 
     assert_kind_of Hash, invoice.attributes
   end
+
+  def test_hash_of_attributes_is_correct
+    invoice = Invoice.new nil, {customer_id: "231", merchant_id: "0000", status: "in transit"}
+
+    assert_equal invoice.attributes[:customer_id], invoice.customer_id
+  end
 end
