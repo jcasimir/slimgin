@@ -15,6 +15,11 @@ class Repository
     hash = {id => database[id]}
   end
 
+  def find_by search_attribute
+    all = find_all_by(search_attribute)
+    {all.keys[0] => all.values[0]}
+  end
+
   def find_all_by search_attribute
     key = search_attribute.keys[0]
     value = search_attribute.values[0]
