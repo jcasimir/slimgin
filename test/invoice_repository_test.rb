@@ -31,4 +31,17 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_kind_of Invoice, invoice_repo.all.values[0]
   end
+
+  def test_it_fetches_a_random_instance
+    # this test has a one in a quadrillion chance of accidentally failing
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    invoices = []
+    50.times do
+      invoices << invoice_repo.random
+    end
+
+    assert_equal 50, invoices.length
+    refute_equal 1, invoices.uniq.length
+  end
 end

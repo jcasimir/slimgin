@@ -10,6 +10,11 @@ class Repository
     database
   end
 
+  def random
+    id = database.keys.sample
+    hash = {id => database[id]}
+  end
+
   def load_db
     db = {}
     CSV.foreach filename, :headers => true do |row|
