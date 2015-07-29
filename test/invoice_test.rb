@@ -37,4 +37,10 @@ class InvoiceTest < Minitest::Test
 
     assert_equal invoice.created_at.to_s, "2012-03-25 09:54:09 UTC"
   end
+
+  def test_created_at_time_is_time_class
+    invoice = Invoice.new nil, {created_at: "1994-04-20 12:35:09 UTC"}
+
+    assert_kind_of Time, invoice.created_at
+  end
 end
