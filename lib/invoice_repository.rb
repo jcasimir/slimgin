@@ -1,1 +1,2 @@
-
+class InvoiceRepository < Repository
+end
