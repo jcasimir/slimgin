@@ -13,4 +13,10 @@ class InvoiceTest < Minitest::Test
 
     assert_kind_of DataInstance, invoice
   end
+
+  def test_it_has_a_customer_id
+    invoice = Invoice.new nil, {customer_id: "1"}
+
+    assert_equal invoice.customer_id, "1"
+  end
 end
