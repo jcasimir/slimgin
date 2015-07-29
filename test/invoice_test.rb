@@ -43,4 +43,10 @@ class InvoiceTest < Minitest::Test
 
     assert_kind_of Time, invoice.created_at
   end
+
+  def test_it_can_give_a_hash_of_attributes
+    invoice = Invoice.new nil, {customer_id: "856", merchant_id: "987", status: "shipped"}
+
+    assert_kind_of Hash, invoice.attributes
+  end
 end

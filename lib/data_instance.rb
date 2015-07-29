@@ -7,6 +7,14 @@ class DataInstance
     end
   end
 
+  def attributes
+    out = {}
+    instance_variables.each do |name|
+      out[name] = instance_variable_get name
+    end
+    out
+  end
+
   def parse input
     time = Time.parse(input) rescue nil
     input = time if input == time.to_s
