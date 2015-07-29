@@ -1,7 +1,8 @@
 class Repository
-  attr_accessor :filename, :database
+  attr_accessor :engine, :filename, :database
 
-  def initialize filename
+  def initialize engine, filename
+    @engine = engine
     @filename = File.new(filename)
     @database = load_db
   end

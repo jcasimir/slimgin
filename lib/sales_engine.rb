@@ -5,7 +5,7 @@ class SalesEngine
       customer_repository: "./fixtures/customers_head.csv",
       invoice_repository: "./fixutres/invoices_head.csv",
     }
-    @customer_repository = CustomerRepository.new locations[:customer_repository]
-    @invoice_repository = InvoiceRepository.new locations[:customer_repository]
+    @customer_repository = CustomerRepository.new self, locations[:customer_repository]
+    @invoice_repository = InvoiceRepository.new self, locations[:customer_repository]
   end
 end

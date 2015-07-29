@@ -24,4 +24,11 @@ class SalesEngineTest < Minitest::Test
 
     assert_kind_of Customer, engine.customer_repository.id("1")
   end
+
+  def test_repo_knows_what_engine_it_belongs_to
+    engine = SalesEngine.new
+    engine.startup
+
+    assert_equal engine, engine.customer_repository.engine
+  end
 end
