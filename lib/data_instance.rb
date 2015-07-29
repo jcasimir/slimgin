@@ -1,4 +1,6 @@
 class DataInstance
+  attr_reader :repository
+
   def initialize repository, hash
     hash.each do |key, value|
       instance_variable_set("@#{key}", parse(value)) unless key.nil?
