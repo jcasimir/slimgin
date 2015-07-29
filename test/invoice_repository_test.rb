@@ -64,4 +64,13 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_kind_of Hash, invoices
   end
+
+  def test_attributes_found_are_correct
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    invoices = invoice_repo.find_all_by(status: "shipped")
+    invoice = invoices["1"]
+
+    assert_equal "shipped", invoice.status
+  end
 end

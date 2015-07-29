@@ -15,8 +15,13 @@ class Repository
     hash = {id => database[id]}
   end
 
-  def find_all_by attribute
-    {}
+  def find_all_by search_attribute
+    key = search_attribute.keys[0]
+    value = search_attribute.values[0]
+    out = {}
+    database.each do |id, attributes|
+      out[id] = attributes if attributes.send(key) == value
+    end
   end
 
   def load_db
