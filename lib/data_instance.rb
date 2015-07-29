@@ -1,8 +1,9 @@
 class DataInstance
-  attr_reader :repository, :created_at, :updated_at
+  attr_reader :repository, :referable, :created_at, :updated_at
 
   def initialize repository, attributes
     @repository = repository
+    @referable = Hash.new
     attributes.each do |key, value|
       instance_variable_set("@#{key}", parse(value)) unless key.nil?
     end
