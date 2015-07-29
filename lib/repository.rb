@@ -1,4 +1,6 @@
 class Repository
+  attr_accessor :filename, :database
+
   def initialize filename
     @filename = File.new(filename)
     @database = load_db
