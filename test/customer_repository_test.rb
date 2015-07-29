@@ -13,4 +13,12 @@ class CustomerRepositoryTest < Minitest::Test
 
     assert_kind_of Customer, customer_repo.id("1")
   end
+
+  def test_customer_retrieves_repository
+    customer_repo = CustomerRepository.new "./fixtures/customers_head.csv"
+
+    customer = customer_repo.id("1")
+
+    assert_kind_of CustomerRepository, customer.repository
+  end
 end
