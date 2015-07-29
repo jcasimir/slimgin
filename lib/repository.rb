@@ -6,6 +6,10 @@ class Repository
     @database = load_db
   end
 
+  def all
+    database
+  end
+
   def load_db
     db = {}
     CSV.foreach filename, :headers => true do |row|

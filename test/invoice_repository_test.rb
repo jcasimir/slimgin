@@ -19,4 +19,10 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_kind_of Invoice, invoice_repo.id("1")
   end
+
+  def test_it_can_fetch_using_all
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    assert_kind_of Hash, invoice_repo.all
+  end
 end
