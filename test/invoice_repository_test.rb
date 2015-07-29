@@ -7,4 +7,10 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_kind_of Repository, invoice_repo
   end
+
+  def test_it_knows_what_file_it_refers_to
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    assert_kind_of File, invoice_repo.filename
+  end
 end
