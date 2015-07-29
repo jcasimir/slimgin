@@ -31,4 +31,10 @@ class InvoiceTest < Minitest::Test
 
     assert_equal invoice.status, "shipped"
   end
+
+  def test_it_has_created_at_date
+    invoice = Invoice.new nil, {created_at: "2012-03-25 09:54:09 UTC"}
+
+    assert_equal invoice.created_at.to_s, "2012-03-25 09:54:09 UTC"
+  end
 end
