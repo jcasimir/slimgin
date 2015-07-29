@@ -44,4 +44,16 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal 50, invoices.length
     refute_equal 1, invoices.uniq.length
   end
+
+  def test_random_instance_is_id_attributes_pair
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    random = invoice_repo.random
+
+    assert_kind_of Hash, random
+    assert random.keys.length == 1
+    assert_kind_of String, random.keys[0]
+    assert random.values.length == 1
+    assert_kind_of Invoice, random.values[0]
+  end
 end
