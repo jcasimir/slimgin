@@ -13,7 +13,7 @@ class CustomerRepository
     CSV.foreach filename, :headers => true do |row|
       id = row.fields[0]
       row_as_hash = row.to_hash.tap{|x| x.delete("id")}
-      db[id] = Customer.new(row_as_hash)
+      db[id] = Customer.new(self, row_as_hash)
     end
     db
   end

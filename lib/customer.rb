@@ -1,7 +1,7 @@
 class Customer
-  attr_reader :first_name, :last_name, :created_at, :updated_at
+  attr_reader :repository, :first_name, :last_name, :created_at, :updated_at
 
-  def initialize hash
+  def initialize repository, hash
     hash.each do |key, value|
       instance_variable_set("@#{key}", parse(value)) unless key.nil?
     end
