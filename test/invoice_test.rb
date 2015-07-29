@@ -25,4 +25,10 @@ class InvoiceTest < Minitest::Test
 
     assert_equal invoice.merchant_id, "123"
   end
+
+  def test_it_has_status
+    invoice = Invoice.new nil, {status: "shipped"}
+
+    assert_equal invoice.status, "shipped"
+  end
 end
