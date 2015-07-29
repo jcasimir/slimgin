@@ -81,4 +81,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_equal 0, invoices.length
   end
+
+  def test_find_returns_some_but_not_all
+    invoice_repo = InvoiceRepository.new "./fixtures/invoices_head.csv"
+
+    invoices = invoice_repo.find_all_by(merchant_id: "1")
+
+    assert_equal 1, invoices.length
+  end
 end
