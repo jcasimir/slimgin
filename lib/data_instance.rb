@@ -1,5 +1,5 @@
 class DataInstance
-  attr_reader :repository
+  attr_reader :repository, :created_at, :updated_at
 
   def initialize repository, hash
     hash.each do |key, value|
