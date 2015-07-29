@@ -17,4 +17,11 @@ class SalesEngineTest < Minitest::Test
 
     assert_kind_of InvoiceRepository, engine.invoice_repository
   end
+
+  def test_it_can_get_customer_from_customer_repo
+    engine = SalesEngine.new
+    engine.startup
+
+    assert_kind_of Customer, engine.customer_repository.id("1")
+  end
 end
