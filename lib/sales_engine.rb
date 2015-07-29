@@ -6,5 +6,6 @@ class SalesEngine
       invoice_repository: "./fixutres/invoices_head.csv",
     }
     @customer_repository = CustomerRepository.new locations[:customer_repository]
+    @invoice_repository = InvoiceRepository.new locations[:customer_repository]
   end
 end

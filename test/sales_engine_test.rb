@@ -2,7 +2,7 @@ require_relative 'test_helper'
 require_relative '../lib/sales_engine'
 
 class SalesEngineTest < Minitest::Test
-  def test_it_loads_dependencies
+  def test_it_loads_customer_repostiory
     engine = SalesEngine.new
 
     engine.startup
