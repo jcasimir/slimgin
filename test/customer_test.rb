@@ -17,7 +17,7 @@ class CustomerTest < Minitest::Test
   def test_it_can_return_its_last_name
     customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
 
-    assert_equal customer.last_name, "Ondricka"
+    assert_equal "Ondricka", customer.last_name
   end
 
   def test_it_can_return_its_created_at_time_as_timestamp
@@ -29,7 +29,7 @@ class CustomerTest < Minitest::Test
   def test_it_can_return_its_created_at_time_as_string
     customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
 
-    assert_equal customer.created_at.to_s, "2015-03-27 14:15:09 UTC"
+    assert_equal "2015-03-27 14:15:09 UTC", customer.created_at.to_s
   end
 
   def test_it_can_return_its_updated_at_time_as_timestamp
@@ -41,7 +41,7 @@ class CustomerTest < Minitest::Test
   def test_it_can_return_its_updated_at_time_as_string
     customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
 
-    assert_equal customer.updated_at.to_s, "2012-03-27 14:54:09 UTC"
+    assert_equal "2012-03-27 14:54:09 UTC", customer.updated_at.to_s
   end
 
   def test_parse_leaves_a_normal_string_alone
@@ -49,7 +49,7 @@ class CustomerTest < Minitest::Test
 
     parsed = customer.parse "hello world"
 
-    assert_equal parsed, "hello world"
+    assert_equal "hello world", parsed
   end
 
   def test_parse_turns_a_date_string_into_date_class
