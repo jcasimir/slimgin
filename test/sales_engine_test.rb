@@ -26,6 +26,15 @@ class SalesEngineTest < Minitest::Test
     assert_kind_of CustomerRepository, engine.customer_repository
   end
 
+  def test_repository_is_loaded_with_filename
+    engine = SalesEngine.new
+    engine.startup
+
+    expected = CustomerRepository.new engine, engine.locations[:customer_repository]
+    actual = engine.customer_repository
+    assert_equal expected.location.inspect, actual.location.inspect
+  end
+
   def test_repository_knows_location
     engine = SalesEngine.new
     engine.startup
