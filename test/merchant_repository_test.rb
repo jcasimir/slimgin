@@ -7,4 +7,10 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_kind_of Repository, merchant_repo
   end
+
+  def test_it_contains_merchants
+    merchant_repo = MerchantRepository.new nil, "./fixtures/merchants_head.csv"
+
+    assert_kind_of Merchant, merchant_repo.id("1")
+  end
 end
