@@ -5,7 +5,7 @@ class CustomerRepositoryTest < Minitest::Test
   def test_it_knows_what_file_it_refers_to
     customer_repo = CustomerRepository.new nil, "./fixtures/customers_head.csv"
 
-    assert_kind_of File, customer_repo.filename
+    assert_kind_of File, customer_repo.location
   end
 
   def test_retrieves_customer_from_database

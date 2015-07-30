@@ -14,7 +14,7 @@ class SalesEngineTest < Minitest::Test
     engine = SalesEngine.new
     engine.startup
 
-    assert_kind_of File, engine.customer_repository.filename
+    assert_kind_of File, engine.customer_repository.location
   end
 
   def test_it_loads_invoice_repository

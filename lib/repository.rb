@@ -1,9 +1,9 @@
 class Repository
-  attr_accessor :engine, :filename, :database
+  attr_accessor :engine, :location, :database
 
-  def initialize engine, filename
+  def initialize engine, location
     @engine = engine
-    @filename = File.new(filename)
+    @location = File.new(location)
     @database = load_db
   end
 
@@ -33,7 +33,7 @@ class Repository
 
   def load_db
     db = {}
-    CSV.foreach filename, :headers => true do |row|
+    CSV.foreach location, :headers => true do |row|
       id = row.fields[0]
       row_as_hash = row.to_hash.tap{|x| x.delete("id")}
       db[id] = my_type(self, row_as_hash)
