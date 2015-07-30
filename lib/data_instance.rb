@@ -24,9 +24,6 @@ class DataInstance
     input
   end
 
-  def customer
-    customer_repository.id(customer_id)
-  end
 
   def customer_repository
     repository.engine.customer_repository
