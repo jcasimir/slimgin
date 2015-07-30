@@ -10,6 +10,14 @@ class SalesEngineTest < Minitest::Test
     assert_kind_of Hash, engine.locations
   end
 
+  def test_filename_list_contains_filenames
+    engine = SalesEngine.new
+
+    engine.startup
+
+    assert_kind_of String, engine.locations[:customer_repository]
+  end
+
   def test_it_loads_customer_repostiory
     engine = SalesEngine.new
 
