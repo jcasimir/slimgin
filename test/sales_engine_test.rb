@@ -40,6 +40,13 @@ class SalesEngineTest < Minitest::Test
     assert_kind_of Customer, engine.customer_repository.id("1")
   end
 
+  def test_it_can_get_merchant_from_merchant_repo
+    engine = SalesEngine.new
+    engine.startup
+
+    assert_kind_of Merchant, engine.merchant_repository.id("1")
+  end
+
   def test_repo_knows_what_engine_it_belongs_to
     engine = SalesEngine.new
     engine.startup
