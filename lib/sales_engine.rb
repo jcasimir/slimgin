@@ -1,7 +1,7 @@
 class SalesEngine
-  attr_accessor :merchant_repository, :invoice_repository, :item_repository, :invoice_item_repository, :customer_repository, :transaction_repository
+  attr_accessor :locations, :merchant_repository, :invoice_repository, :item_repository, :invoice_item_repository, :customer_repository, :transaction_repository
   def startup
-    locations = {
+    @locations = {
       customer_repository: "./fixtures/customers_head.csv",
       invoice_repository: "./fixutres/invoices_head.csv",
       merchant_repository: "./fixtures/merchants_head.csv",
