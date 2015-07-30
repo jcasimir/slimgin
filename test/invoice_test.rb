@@ -69,6 +69,6 @@ class InvoiceTest < Minitest::Test
     engine.startup
     invoice = engine.invoice_repository.id("1")
 
-    assert_equal invoice.customers, engine.customer_repository
+    assert_equal invoice.customer_repository, engine.customer_repository
   end
 end

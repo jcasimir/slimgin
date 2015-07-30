@@ -1,16 +1,11 @@
 class DataInstance
-  attr_reader :repository, :referable, :created_at, :updated_at, :customers
+  attr_reader :repository, :referable, :created_at, :updated_at
 
   def initialize repository, attributes
     @repository = repository
     @referable = Hash.new
     attributes.each do |key, value|
       instance_variable_set("@#{key}", parse(value)) unless key.nil?
-    end
-    if repository != nil
-      if repository.engine != nil
-        @customers = repository.engine.customer_repository
-      end
     end
   end
 
@@ -27,5 +22,9 @@ class DataInstance
     time = Time.parse(input) rescue nil
     input = time if input == time.to_s
     input
+  end
+
+  def customer_repository
+    repository.engine.customer_repository
   end
 end
