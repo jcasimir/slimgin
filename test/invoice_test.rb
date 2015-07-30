@@ -88,6 +88,14 @@ class InvoiceTest < Minitest::Test
     assert_equal invoice.customer_repository, engine.customer_repository
   end
 
+  def test_the_engine_to_which_it_belongs_refers_to_a_customer
+    engine = SalesEngine.new
+    engine.startup
+    invoice = engine.invoice_repository.id("1")
+    
+    assert_kind_of Customer, engine.customer_repository.id("1")
+  end
+
   def test_it_knows_the_customer_to_which_it_refers
     engine = SalesEngine.new
     engine.startup
