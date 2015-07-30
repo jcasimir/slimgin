@@ -18,6 +18,14 @@ class SalesEngineTest < Minitest::Test
     assert_kind_of InvoiceRepository, engine.invoice_repository
   end
 
+  def test_it_loads_merchant_repository
+    engine = SalesEngine.new
+
+    engine.startup
+
+    assert_kind_of MerchantRepository, engine.merchant_repository
+  end
+
   def test_it_can_get_invoice_from_invoice_repo
     engine = SalesEngine.new
     engine.startup
