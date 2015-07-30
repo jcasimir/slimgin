@@ -2,6 +2,14 @@ require_relative 'test_helper'
 require_relative '../lib/sales_engine'
 
 class SalesEngineTest < Minitest::Test
+  def test_it_has_a_list_of_filenames
+    engine = SalesEngine.new
+
+    engine.startup
+
+    assert_kind_of Hash, engine.locations
+  end
+
   def test_it_loads_customer_repostiory
     engine = SalesEngine.new
 
