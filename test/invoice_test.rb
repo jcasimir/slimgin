@@ -92,7 +92,7 @@ class InvoiceTest < Minitest::Test
     engine = SalesEngine.new
     engine.startup
     invoice = engine.invoice_repository.id("1")
-    
+
     assert_kind_of Customer, engine.customer_repository.id("1")
   end
 
