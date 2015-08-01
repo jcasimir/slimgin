@@ -59,6 +59,8 @@ class SalesEngine
     item_repository.find_by(id: item_id)
   end
 
-
+  def invoice_items_for_an_item(item_id)
+    invoice_item_repository.find_all_by(item_id: item_id)
+  end
 
 end
