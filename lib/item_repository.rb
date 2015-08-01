@@ -8,4 +8,9 @@ class ItemRepository < Repository
   def invoice_items_for_an_item(item_id)
     engine.invoice_items_for_an_item(item_id)
   end
+
+  def merchant_for_an_item(merchant_id)
+    engine.merchant_for_an_item(merchant_id)
+  end
+  
 end

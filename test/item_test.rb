@@ -23,5 +23,14 @@ class ItemTest < Minitest::Test
     assert_equal 1, invoice_items.size
   end
 
+  def test_it_can_find_its_merchant
+    repo = engine.item_repository
+    item = repo.id("539")
+
+    merchant = item.merchant
+
+    assert_equal "Klein, Rempel and Jones", merchant.name
+  end
+
 
 end
