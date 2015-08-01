@@ -44,4 +44,14 @@ class SalesEngine
     invoice_item_repository.find_all_by(invoice_id: invoice_id)
   end
 
+  def items_for_an_invoice(invoice_id)
+    invoice_items = invoice_items_for_an_invoice(invoice_id)
+    items = []
+    invoice_items.each do |invoice_item_id, invoice_item|
+      items << item_repository.find_all_by(id: invoice_item.item_id)
+    end
+  end
+
+
+
 end
