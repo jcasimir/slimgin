@@ -29,4 +29,9 @@ class DataInstance
   def customer_repository
     repository.engine.customer_repository
   end
+
+  def id
+    repository.database.key(self)
+  end
+  
 end

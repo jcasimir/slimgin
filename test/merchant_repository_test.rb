@@ -13,4 +13,13 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_kind_of Merchant, merchant_repo.id("1")
   end
+
+  def test_it_tells_the_engine_to_find_invoices
+    skip
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+    result = repo.invoices_for_a_merchant("1")
+    assert result
+  end
 end
