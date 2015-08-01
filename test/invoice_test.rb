@@ -2,6 +2,17 @@ require_relative 'test_helper'
 require_relative '../lib/invoice'
 
 class InvoiceTest < Minitest::Test
+
+  def test_it_can_find_the_associated_merchant
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+    invoice = repo.id("1")
+    assert_equal "Schroeder-Jerde", invoice.merchant.name
+  end
+
+
+  ###############PREVIOUS DEVELOPER
   def test_it_is_an_invoice
     invoice = Invoice.new nil, {}
 
