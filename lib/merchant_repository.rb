@@ -11,4 +11,6 @@ class MerchantRepository < Repository
     engine.items_for_a_merchant(merchant_id)
   end
 
+  
+
 end

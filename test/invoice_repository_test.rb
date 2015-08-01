@@ -2,6 +2,22 @@ require_relative 'test_helper'
 require_relative '../lib/invoice_repository.rb'
 
 class InvoiceRepositoryTest < Minitest::Test
+  attr_reader :engine
+
+  def setup
+    @engine = SalesEngine.new
+    engine.startup
+  end
+
+  def test_it_can_find_successful_invoices
+    repo = engine.invoice_repository
+    result = repo.successful_invoices
+
+    assert_equal 14, result.size
+    assert_kind_of Invoice, result["1"]
+  end
+
+  ##########PREVIOUS DEVELOPER########
   def test_it_is_a_repository
     invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 

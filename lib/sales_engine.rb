@@ -14,10 +14,10 @@ class SalesEngine
       invoice_item_repository: "./test/fixtures/invoice_items.csv",
     }
     @customer_repository     = CustomerRepository.new self, locations[:customer_repository]
-    @invoice_repository      = InvoiceRepository.new self, locations[:invoice_repository]
     @merchant_repository     = MerchantRepository.new self, locations[:merchant_repository]
     @item_repository         = ItemRepository.new self, locations[:item_repository]
     @transaction_repository  = TransactionRepository.new self, locations[:transaction_repository]
+    @invoice_repository      = InvoiceRepository.new self, locations[:invoice_repository]
     @invoice_item_repository = InvoiceItemRepository.new self, locations[:invoice_item_repository]
   end
 
