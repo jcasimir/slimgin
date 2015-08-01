@@ -6,11 +6,13 @@ class SalesEngine
       invoice_repository: "./test/fixtures/invoices.csv",
       merchant_repository: "./test/fixtures/merchants.csv",
       item_repository: "./test/fixtures/items.csv",
+      transaction_repository: "./test/fixtures/transactions.csv",
     }
     @customer_repository = CustomerRepository.new self, locations[:customer_repository]
     @invoice_repository = InvoiceRepository.new self, locations[:invoice_repository]
     @merchant_repository = MerchantRepository.new self, locations[:merchant_repository]
     @item_repository = ItemRepository.new self, locations[:item_repository]
+    @transaction_repository = TransactionRepository.new self, locations[:transaction_repository]
   end
 
   def invoices_for_a_merchant(merchant_id)
@@ -23,6 +25,10 @@ class SalesEngine
 
   def merchant_for_an_invoice(merchant_id)
     merchant_repository.database[merchant_id]
+  end
+
+  def transactions_for_an_invoice(invoice_id)
+    transaction_repository.find_all_by(invoice_id: invoice_id)
   end
 
 end
