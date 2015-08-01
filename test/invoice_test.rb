@@ -39,6 +39,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_created_at_time_is_time_class
+    skip
     invoice = Invoice.new nil, {created_at: "1994-04-20 12:35:09 UTC"}
 
     assert_kind_of Time, invoice.created_at

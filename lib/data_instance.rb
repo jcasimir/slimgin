@@ -2,6 +2,7 @@ class DataInstance
   attr_reader :repository, :referable, :created_at, :updated_at
 
   def initialize repository, attributes
+
     @repository = repository
     @referable = Hash.new
     attributes.each do |key, value|
@@ -10,6 +11,7 @@ class DataInstance
   end
 
   def attributes
+
     out = {}
     instance_variables.each do |name|
       non_instance_name = name.to_s.delete("@").to_sym

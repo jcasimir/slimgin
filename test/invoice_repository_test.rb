@@ -3,38 +3,38 @@ require_relative '../lib/invoice_repository.rb'
 
 class InvoiceRepositoryTest < Minitest::Test
   def test_it_is_a_repository
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     assert_kind_of Repository, invoice_repo
   end
 
   def test_it_knows_what_file_it_refers_to
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     assert_kind_of File, invoice_repo.location
   end
 
   def test_it_can_fetch_an_invoice
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     assert_kind_of Invoice, invoice_repo.id("1")
   end
 
   def test_it_can_fetch_using_all
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     assert_kind_of Hash, invoice_repo.all
   end
 
   def test_it_fetches_invoices_using_all
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     assert_kind_of Invoice, invoice_repo.all.values[0]
   end
 
   def test_it_fetches_a_random_instance
     # this test has a one in a quadrillion chance of accidentally failing
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = []
     50.times do
@@ -46,7 +46,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_random_instance_is_id_attributes_pair
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     random = invoice_repo.random
 
@@ -58,7 +58,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_it_can_find_by_attribute
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_all_by(merchant_id: "1")
 
@@ -66,7 +66,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_attributes_found_are_correct
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_all_by(status: "shipped")
     invoice = invoices["1"]
@@ -75,7 +75,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_find_does_not_return_what_it_is_not_searching_for
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_all_by(status: "in transit")
 
@@ -83,7 +83,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_find_returns_some_but_not_all
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_all_by(merchant_id: "1")
 
@@ -91,7 +91,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_find_first_of_multiple
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_by(customer_id: "1")
 
@@ -99,7 +99,7 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_find_all_by_returns_empty_hash_if_no_findings
-    invoice_repo = InvoiceRepository.new nil, "./fixtures/invoices_head.csv"
+    invoice_repo = InvoiceRepository.new nil, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_all_by(customer_id: "666")
 
