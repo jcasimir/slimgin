@@ -7,4 +7,8 @@ class InvoiceItem < DataInstance
     repository.invoice_for_invoice_item(invoice_id)
   end
 
+  def item
+    repository.item_for_invoice_item(item_id)
+  end
+
 end

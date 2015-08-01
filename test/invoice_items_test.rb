@@ -23,4 +23,13 @@ class InvoiceItemTest < Minitest::Test
     assert_equal "1", invoice.id
   end
 
+  def test_it_can_find_its_item
+    repo = engine.invoice_item_repository
+    i_item = InvoiceItem.new(repo, {item_id: "539"})
+
+    item = i_item.item
+
+    assert_equal "539", item.id
+  end
+
 end

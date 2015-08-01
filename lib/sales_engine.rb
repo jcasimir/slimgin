@@ -46,14 +46,17 @@ class SalesEngine
 
   def items_for_an_invoice(invoice_id)
     invoice_items = invoice_items_for_an_invoice(invoice_id)
-    items = []
-    invoice_items.each do |invoice_item_id, invoice_item|
-      items << item_repository.find_all_by(id: invoice_item.item_id)
+    items = invoice_items.map do |invoice_item_id, invoice_item|
+      item_repository.find_all_by(id: invoice_item.item_id)
     end
   end
 
   def invoice_for_invoice_item(invoice_id)
     invoice_repository.find_by(id: invoice_id)
+  end
+
+  def item_for_invoice_item(item_id)
+    item_repository.find_by(id: item_id)
   end
 
 
