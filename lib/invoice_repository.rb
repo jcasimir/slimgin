@@ -1,10 +1,10 @@
 class InvoiceRepository < Repository
   attr_reader :successful_invoices
 
-  # def initialize(engine, location)
-  #   super
-  #   @successful_invoices ||= successful_invoices
-  # end
+  def initialize(engine, location)
+    super
+    @successful_invoices ||= successful_invoices
+  end
 
   def my_type repository, attributes
     Invoice.new repository, attributes
