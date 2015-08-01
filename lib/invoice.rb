@@ -27,4 +27,6 @@ class Invoice < DataInstance
     transactions.values.any? { |transaction| transaction.result == "success" }
   end
 
+
+
 end

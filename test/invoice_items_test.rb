@@ -32,4 +32,12 @@ class InvoiceItemTest < Minitest::Test
     assert_equal "539", item.id
   end
 
+  def test_it_can_calculate_total_price
+    repo = engine.invoice_item_repository
+    invoice_item = repo.id('1')
+
+    result = invoice_item.calculate_total_price
+    assert_equal 68175, result
+  end
+
 end

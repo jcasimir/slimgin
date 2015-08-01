@@ -9,9 +9,10 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
   end
 
-  def test_it_can_find_successful_invoices
+
+  def test_it_can_find_all_successful_invoices
     repo = engine.invoice_repository
-    result = repo.successful_invoices
+    result = repo.all_successful_invoices
 
     assert_equal 14, result.size
     assert_equal Invoice, result["1"].class

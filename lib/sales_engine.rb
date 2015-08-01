@@ -75,4 +75,22 @@ class SalesEngine
     invoice_repository.find_all_by(customer_id: customer_id)
   end
 
+  ###########BUNISNESS INTELLIGENCE######
+  def successful_invoices_for_a_merchant(merchant_id)
+    invoice_repository.successful_invoices_for_a_merchant(merchant_id)
+  end
+
+  def revenue_for_a_merchant(merchant_id)
+    total = successful_invoices_for_a_merchant(merchant_id).map do |invoice_id, invoice|
+        invoice_revenue(invoice_id)
+    end
+    total.flatten.reduce(:+)
+  end
+
+  def invoice_revenue(invoice_id)
+    invoice_items_for_an_invoice(invoice_id).map do |invoice_item_id, invoice_item|
+      invoice_item.calculate_total_price
+    end
+  end
+
 end
