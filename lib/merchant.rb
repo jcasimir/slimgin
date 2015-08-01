@@ -10,7 +10,8 @@ class Merchant < DataInstance
   end
 
   def revenue
-    repository.revenue_for_a_merchant(id)
+    revenue = repository.revenue_for_a_merchant(id)
+    revenue ||= 0
   end
 
 end
