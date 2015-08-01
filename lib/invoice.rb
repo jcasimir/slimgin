@@ -15,4 +15,8 @@ class Invoice < DataInstance
     repository.transactions_for_an_invoice(id)
   end
 
+  def invoice_items
+    repository.invoice_items_for_an_invoice(id)
+  end
+
 end

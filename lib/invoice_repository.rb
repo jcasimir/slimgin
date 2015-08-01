@@ -11,4 +11,8 @@ class InvoiceRepository < Repository
     engine.transactions_for_an_invoice(invoice_id)
   end
 
+  def invoice_items_for_an_invoice(invoice_id)
+    engine.invoice_items_for_an_invoice(invoice_id)
+  end
+
 end

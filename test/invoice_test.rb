@@ -24,6 +24,14 @@ class InvoiceTest < Minitest::Test
     assert_equal 3, transactions.size
   end
 
+  def test_invoice_items_finds_associated_invoice_items_for_an_invoice
+    repo = engine.invoice_repository
+    invoice = repo.id("1")
+    invoice_items = invoice.invoice_items
+
+    assert_equal 8, invoice_items.size
+  end
+
   ###############PREVIOUS DEVELOPER
   def test_it_is_an_invoice
     invoice = Invoice.new nil, {}

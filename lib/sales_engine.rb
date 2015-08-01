@@ -21,6 +21,9 @@ class SalesEngine
     @invoice_item_repository = InvoiceItemRepository.new self, locations[:invoice_item_repository]
   end
 
+
+  # relationships
+
   def invoices_for_a_merchant(merchant_id)
     invoice_repository.find_all_by(merchant_id: merchant_id)
   end
@@ -35,6 +38,10 @@ class SalesEngine
 
   def transactions_for_an_invoice(invoice_id)
     transaction_repository.find_all_by(invoice_id: invoice_id)
+  end
+
+  def invoice_items_for_an_invoice(invoice_id)
+    invoice_item_repository.find_all_by(invoice_id: invoice_id)
   end
 
 end
