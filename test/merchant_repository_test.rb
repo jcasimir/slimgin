@@ -39,4 +39,10 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal expected, results.map { |merchant| merchant.name }
   end
 
+  def test_it_can_calculate_the_total_revenue_for_a_given_date
+    repo = engine.merchant_repository
+
+    assert_equal 2106777, repo.revenue("2012-03-25")
+  end
+
 end

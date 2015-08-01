@@ -33,4 +33,8 @@ class MerchantRepository < Repository
     engine.total_items_for_a_merchant(merchant_id)
   end
 
+  def revenue(date)
+    engine.revenue_for_a_date(date)
+  end
+
 end

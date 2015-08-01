@@ -34,4 +34,8 @@ class InvoiceRepository < Repository
     all_successful_invoices.select { |id, invoice| invoice.merchant_id == merchant_id}
   end
 
+  def invoices_for_a_date(date)
+    all_successful_invoices.select { |id, invoice| invoice.created_at.include?(date)}
+  end
+
 end

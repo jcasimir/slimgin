@@ -106,4 +106,11 @@ class SalesEngine
     end
   end
 
+  def revenue_for_a_date(date)
+    total = invoice_repository.invoices_for_a_date(date).map do |invoice_id, invoice|
+      invoice_revenue(invoice_id)
+    end
+    total.flatten.reduce(:+)
+  end
+
 end
