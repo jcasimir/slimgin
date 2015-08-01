@@ -2,15 +2,43 @@ require_relative 'test_helper'
 require_relative '../lib/invoice'
 
 class InvoiceTest < Minitest::Test
+  attr_reader :engine
+
+  def setup
+    @engine = SalesEngine.new
+    engine.startup
+  end
 
   def test_it_can_find_the_associated_merchant
-    engine = SalesEngine.new
-    engine.startup
     repo = engine.invoice_repository
     invoice = repo.id("1")
     assert_equal "Schroeder-Jerde", invoice.merchant.name
   end
 
+  def test_transactions_finds_accociated_transactions_for_an_invoice
+    repo = engine.invoice_repository
+    invoice = repo.id('1')
+
+    transactions = invoice.transactions
+
+    assert_equal 3, transactions.size
+  end
+
+  def test_invoice_items_finds_associated_invoice_items_for_an_invoice
+    repo = engine.invoice_repository
+    invoice = repo.id("1")
+    invoice_items = invoice.invoice_items
+
+    assert_equal 8, invoice_items.size
+  end
+
+  def test_items_finds_associated_items_for_an_invoice
+    repo = engine.invoice_repository
+    invoice = repo.id("1")
+    items = invoice.items
+
+    assert_equal 8, items.size
+  end
 
   ###############PREVIOUS DEVELOPER
   def test_it_is_an_invoice
@@ -69,56 +97,42 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_belongs_to_an_engine
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_kind_of SalesEngine, invoice.repository.engine
   end
 
   def test_knows_what_engine_it_belongs_to
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_equal invoice.repository.engine, engine
   end
 
   def test_it_has_a_customer_repository
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_kind_of CustomerRepository, invoice.customer_repository
   end
 
   def test_knows_the_customer_repository_of_the_engine_to_which_it_belongs
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_equal invoice.customer_repository, engine.customer_repository
   end
 
   def test_the_engine_to_which_it_belongs_refers_to_a_customer
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_kind_of Customer, engine.customer_repository.id("1")
   end
 
   def test_it_refers_to_a_customer
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_kind_of Customer, invoice.customer_repository.id("1")
   end
 
   def test_it_knows_the_customer_to_which_it_refers
-    engine = SalesEngine.new
-    engine.startup
     invoice = engine.invoice_repository.id("1")
 
     assert_equal invoice.customer, engine.customer_repository.id(invoice.customer_id)

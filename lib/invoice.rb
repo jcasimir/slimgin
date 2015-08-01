@@ -8,7 +8,19 @@ class Invoice < DataInstance
   end
 
   def merchant
-    repository.merchant_for_an_invoice(self.merchant_id)
+    repository.merchant_for_an_invoice(merchant_id)
+  end
+
+  def transactions
+    repository.transactions_for_an_invoice(id)
+  end
+
+  def invoice_items
+    repository.invoice_items_for_an_invoice(id)
+  end
+
+  def items
+    repository.items_for_an_invoice(id)
   end
 
 end

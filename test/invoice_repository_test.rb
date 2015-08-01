@@ -95,7 +95,7 @@ class InvoiceRepositoryTest < Minitest::Test
 
     invoices = invoice_repo.find_by(customer_id: "1")
 
-    assert_equal 1, invoices.length
+    assert_equal "1", invoices.customer_id
   end
 
   def test_find_all_by_returns_empty_hash_if_no_findings

@@ -18,7 +18,7 @@ class Repository
 
   def find_by search_attribute
     all = find_all_by(search_attribute)
-    {all.keys[0] => all.values[0]}
+    all.values[0]
   end
 
   def find_all_by search_attribute

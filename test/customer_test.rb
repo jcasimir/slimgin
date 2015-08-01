@@ -2,6 +2,25 @@ require_relative 'test_helper'
 require_relative '../lib/customer'
 
 class CustomerTest < Minitest::Test
+  attr_reader :engine
+
+  def setup
+    @engine = SalesEngine.new
+    engine.startup
+  end
+
+  def test_it_can_find_its_invoices
+    repo = engine.customer_repository
+    customer = repo.id('1')
+
+    invoices = customer.invoices
+
+    assert_equal 8, invoices.size
+  end
+
+
+
+  ##########PREVIOUS DEVELOPER ############
   def test_it_can_be_created_with_parameters
     customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
 
