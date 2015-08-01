@@ -67,4 +67,8 @@ class SalesEngine
     merchant_repository.find_by(id: merchant_id)
   end
 
+  def invoice_for_transaction(invoice_id)
+    invoice_repository.find_by(id: invoice_id)
+  end
+
 end
