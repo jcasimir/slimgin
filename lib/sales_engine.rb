@@ -52,6 +52,10 @@ class SalesEngine
     end
   end
 
+  def invoice_for_invoice_item(invoice_id)
+    invoice_repository.find_by(id: invoice_id)
+  end
+
 
 
 end

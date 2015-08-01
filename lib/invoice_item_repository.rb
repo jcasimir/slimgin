@@ -5,4 +5,8 @@ class InvoiceItemRepository < Repository
     InvoiceItem.new(repository, attributes)
   end
 
+  def invoice_for_invoice_item(invoice_id)
+    engine.invoice_for_invoice_item(invoice_id)
+  end
+
 end
