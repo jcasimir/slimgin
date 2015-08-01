@@ -27,4 +27,15 @@ class MerchantTest < Minitest::Test
 
     assert_equal 3, result.size
   end
+
+  def test_it_can_find_items
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+    merchant = repo.id("1")
+    result = merchant.items
+
+    assert_equal 15, result.size
+  end
+
 end
