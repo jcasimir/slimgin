@@ -47,4 +47,12 @@ class MerchantTest < Minitest::Test
     assert_equal 2106777, result
   end
 
+  def test_it_can_find_its_total_items
+    repo = engine.merchant_repository
+    merchant = repo.id("1")
+    result = merchant.total_items
+
+    assert_equal 47, result
+  end
+
 end

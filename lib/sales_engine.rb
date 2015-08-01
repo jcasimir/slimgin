@@ -93,4 +93,17 @@ class SalesEngine
     end
   end
 
+  def total_items_for_a_merchant(merchant_id)
+    total = successful_invoices_for_a_merchant(merchant_id).map do |invoice_id, invoice|
+      total_items(invoice_id)
+    end
+    total.flatten.reduce(:+)
+  end
+
+  def total_items(invoice_id)
+    invoice_items_for_an_invoice(invoice_id).map do |invoice_item_id, invoice_item|
+      invoice_item.quantity.to_i
+    end
+  end
+
 end

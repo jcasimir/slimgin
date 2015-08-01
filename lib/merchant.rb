@@ -14,4 +14,9 @@ class Merchant < DataInstance
     revenue ||= 0
   end
 
+  def total_items
+    items = repository.total_items_for_a_merchant(id)
+    items ||= 0
+  end
+
 end

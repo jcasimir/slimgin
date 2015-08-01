@@ -30,13 +30,13 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal expected, results.map { |merchant| merchant.name }
   end
 
-  # def test_can_identify_top_X_merchants_by_items
-  #   repo = engine.merchant_repository
-  #
-  #   results = repo.most_items(2)
-  #   expected = ["Schroeder-Jerde", "Klein, Rempel and Jones"]
-  #
-  #   assert_equal expected, results.map { |merchant| merchant.name }
-  # end
+  def test_can_identify_top_X_merchants_by_items
+    repo = engine.merchant_repository
+
+    results = repo.most_items(2)
+    expected = ["Schroeder-Jerde", "Klein, Rempel and Jones"]
+
+    assert_equal expected, results.map { |merchant| merchant.name }
+  end
 
 end
