@@ -55,4 +55,14 @@ class MerchantTest < Minitest::Test
     assert_equal 47, result
   end
 
+  def test_it_can_find_its_revenue_for_a_date
+    repo = engine.merchant_repository
+    merchant = repo.id("2")
+    result = merchant.revenue("2012-03-12")
+
+    assert_equal 528913, result
+
+
+  end
+
 end

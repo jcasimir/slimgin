@@ -30,12 +30,12 @@ class InvoiceRepository < Repository
     database.select { |id, invoice| invoice.successful? }
   end
 
-  def successful_invoices_for_a_merchant(merchant_id)
-    all_successful_invoices.select { |id, invoice| invoice.merchant_id == merchant_id}
+  def select_for_a_merchant(merchant_id, current_invoices = all_successful_invoices)
+    current_invoices.select { |id, invoice| invoice.merchant_id == merchant_id }
   end
 
-  def invoices_for_a_date(date)
-    all_successful_invoices.select { |id, invoice| invoice.created_at.include?(date)}
+  def select_for_a_date(date, current_invoices = all_successful_invoices)
+    current_invoices.select { |id, invoice| invoice.created_at.include?(date) }
   end
 
 end

@@ -76,12 +76,13 @@ class SalesEngine
   end
 
   ###########BUNISNESS INTELLIGENCE######
-  def successful_invoices_for_a_merchant(merchant_id)
-    invoice_repository.successful_invoices_for_a_merchant(merchant_id)
+  def successful_invoices_for_a_merchant(merchant_id, date = '')
+    selected_for_a_merch = invoice_repository.select_for_a_merchant(merchant_id)
+    invoice_repository.select_for_a_date(date, selected_for_a_merch)
   end
 
-  def revenue_for_a_merchant(merchant_id)
-    total = successful_invoices_for_a_merchant(merchant_id).map do |invoice_id, invoice|
+  def revenue_for_a_merchant(merchant_id, date)
+    total = successful_invoices_for_a_merchant(merchant_id, date).map do |invoice_id, invoice|
         invoice_revenue(invoice_id)
     end
     total.flatten.reduce(:+)
@@ -107,7 +108,7 @@ class SalesEngine
   end
 
   def revenue_for_a_date(date)
-    total = invoice_repository.invoices_for_a_date(date).map do |invoice_id, invoice|
+    total = invoice_repository.select_for_a_date(date).map do |invoice_id, invoice|
       invoice_revenue(invoice_id)
     end
     total.flatten.reduce(:+)

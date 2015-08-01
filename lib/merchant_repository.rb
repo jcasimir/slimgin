@@ -11,8 +11,8 @@ class MerchantRepository < Repository
     engine.items_for_a_merchant(merchant_id)
   end
 
-  def revenue_for_a_merchant(merchant_id)
-    engine.revenue_for_a_merchant(merchant_id)
+  def revenue_for_a_merchant(merchant_id, date)
+    engine.revenue_for_a_merchant(merchant_id, date)
   end
 
   def most_revenue(top_x)
