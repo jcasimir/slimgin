@@ -2,9 +2,9 @@ class Repository
   attr_accessor :engine, :location, :database
 
   def initialize engine, location
-    @engine = engine
-    @location = File.new(location)
-    @database = load_db
+    @engine ||= engine
+    @location ||= File.new(location)
+    @database ||= load_db
   end
 
   def all
