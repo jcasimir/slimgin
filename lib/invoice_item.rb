@@ -1,4 +1,5 @@
 require_relative "data_instance"
+require "bigdecimal"
 
 class InvoiceItem < DataInstance
   attr_reader :item_id, :invoice_id, :quantity, :unit_price
@@ -9,6 +10,10 @@ class InvoiceItem < DataInstance
 
   def item
     repository.item_for_invoice_item(item_id)
+  end
+
+  def calculate_total_price
+    quantity.to_i * BigDecimal.new(unit_price)
   end
 
 end

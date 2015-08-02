@@ -14,10 +14,10 @@ class SalesEngine
       invoice_item_repository: "./test/fixtures/invoice_items.csv",
     }
     @customer_repository     = CustomerRepository.new self, locations[:customer_repository]
-    @invoice_repository      = InvoiceRepository.new self, locations[:invoice_repository]
     @merchant_repository     = MerchantRepository.new self, locations[:merchant_repository]
     @item_repository         = ItemRepository.new self, locations[:item_repository]
     @transaction_repository  = TransactionRepository.new self, locations[:transaction_repository]
+    @invoice_repository      = InvoiceRepository.new self, locations[:invoice_repository]
     @invoice_item_repository = InvoiceItemRepository.new self, locations[:invoice_item_repository]
   end
 
@@ -73,6 +73,60 @@ class SalesEngine
 
   def invoices_for_customer(customer_id)
     invoice_repository.find_all_by(customer_id: customer_id)
+  end
+
+  ###########BUNISNESS INTELLIGENCE######
+  def successful_invoices_for_a_merchant(merchant_id, date = '')
+    selected_for_a_merch = invoice_repository.select_for_a_merchant(merchant_id)
+    invoice_repository.select_for_a_date(date, selected_for_a_merch)
+  end
+
+  def revenue_for_a_merchant(merchant_id, date)
+    total = successful_invoices_for_a_merchant(merchant_id, date).map do |invoice_id, invoice|
+        invoice_revenue(invoice_id)
+    end
+    total.flatten.reduce(:+)
+  end
+
+  def invoice_revenue(invoice_id)
+    invoice_items_for_an_invoice(invoice_id).map do |invoice_item_id, invoice_item|
+      invoice_item.calculate_total_price
+    end
+  end
+
+  def total_items_for_a_merchant(merchant_id)
+    total = successful_invoices_for_a_merchant(merchant_id).map do |invoice_id, invoice|
+      total_items(invoice_id)
+    end
+    total.flatten.reduce(:+)
+  end
+
+  def total_items(invoice_id)
+    invoice_items_for_an_invoice(invoice_id).map do |invoice_item_id, invoice_item|
+      invoice_item.quantity.to_i
+    end
+  end
+
+  def revenue_for_a_date(date)
+    total = invoice_repository.select_for_a_date(date).map do |invoice_id, invoice|
+      invoice_revenue(invoice_id)
+    end
+    total.flatten.reduce(:+)
+  end
+
+  def transactions_per_customer_id(merchant_id)
+    customer_transactions = Hash.new(0)
+    invoice_repository.select_for_a_merchant(merchant_id).each do |invoice_id, invoice|
+      customer_transactions[invoice.customer_id] += invoice.transactions.size
+    end
+    customer_transactions
+  end
+
+  def customers_with_pending_invoices_for_a_merchant(merchant_id)
+    pending_invoices = invoice_repository.pending_invoices
+    invoice_repository.select_for_a_merchant(merchant_id, pending_invoices)
+                    .map { |invoice_id, invoice| invoice.customer_id }
+                    .map { |customer_id| customer_repository.find_by(id: customer_id) }
   end
 
 end

@@ -23,4 +23,10 @@ class Invoice < DataInstance
     repository.items_for_an_invoice(id)
   end
 
+  def successful?
+    transactions.values.any? { |transaction| transaction.result == "success" }
+  end
+
+
+
 end
