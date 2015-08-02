@@ -71,4 +71,13 @@ class MerchantTest < Minitest::Test
     assert_equal "Joey", result.first_name
   end
 
+  def test_it_can_find_customers_with_pending_invoices
+    repo = engine.merchant_repository
+    merchant = repo.id("1")
+    result = merchant.customers_with_pending_invoices
+
+    assert_equal ["Leanne"], result.map { |customer| customer
+                                              .first_name }
+  end
+
 end

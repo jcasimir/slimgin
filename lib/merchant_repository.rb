@@ -43,6 +43,8 @@ class MerchantRepository < Repository
     engine.customer_repository.find_by(id: customer_id)
   end
 
-
+  def customers_with_pending_invoices_for_a_merchant(merchant_id)
+    engine.customers_with_pending_invoices_for_a_merchant(merchant_id)
+  end
 
 end

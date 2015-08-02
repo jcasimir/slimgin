@@ -38,4 +38,8 @@ class InvoiceRepository < Repository
     current_invoices.select { |id, invoice| invoice.created_at.include?(date) }
   end
 
+  def pending_invoices
+    database.select { |id, invoice| !invoice.successful? }
+  end
+
 end

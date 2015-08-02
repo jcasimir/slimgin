@@ -122,4 +122,11 @@ class SalesEngine
     customer_transactions
   end
 
+  def customers_with_pending_invoices_for_a_merchant(merchant_id)
+    pending_invoices = invoice_repository.pending_invoices
+    invoice_repository.select_for_a_merchant(merchant_id, pending_invoices)
+                    .map { |invoice_id, invoice| invoice.customer_id }
+                    .map { |customer_id| customer_repository.find_by(id: customer_id) }
+  end
+
 end

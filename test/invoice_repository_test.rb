@@ -18,6 +18,14 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal Invoice, result["1"].class
   end
 
+  def test_it_can_find_pending_invoices
+    repo = engine.invoice_repository
+    result = repo.pending_invoices
+
+    assert_equal 6, result.size
+  end
+
+
   ##########PREVIOUS DEVELOPER########
   def test_it_is_a_repository
     invoice_repo = InvoiceRepository.new engine, "./test/fixtures/invoices.csv"

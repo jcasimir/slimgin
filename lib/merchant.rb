@@ -23,4 +23,8 @@ class Merchant < DataInstance
     repository.favorite_customer_for_a_merchant(id)
   end
 
+  def customers_with_pending_invoices
+    repository.customers_with_pending_invoices_for_a_merchant(id).uniq
+  end
+
 end
