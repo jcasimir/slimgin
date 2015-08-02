@@ -114,4 +114,12 @@ class SalesEngine
     total.flatten.reduce(:+)
   end
 
+  def transactions_per_customer_id(merchant_id)
+    customer_transactions = Hash.new(0)
+    invoice_repository.select_for_a_merchant(merchant_id).each do |invoice_id, invoice|
+      customer_transactions[invoice.customer_id] += invoice.transactions.size
+    end
+    customer_transactions
+  end
+
 end

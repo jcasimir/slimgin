@@ -19,4 +19,8 @@ class Merchant < DataInstance
     items ||= 0
   end
 
+  def favorite_customer
+    repository.favorite_customer_for_a_merchant(id)
+  end
+
 end

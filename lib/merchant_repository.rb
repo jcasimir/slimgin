@@ -37,4 +37,12 @@ class MerchantRepository < Repository
     engine.revenue_for_a_date(date)
   end
 
+  def favorite_customer_for_a_merchant(merchant_id)
+    customer_transactions = engine.transactions_per_customer_id(merchant_id)
+    customer_id = customer_transactions.to_a.sort_by { |data| data[1] }.last[0]
+    engine.customer_repository.find_by(id: customer_id)
+  end
+
+
+
 end

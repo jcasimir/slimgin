@@ -61,8 +61,14 @@ class MerchantTest < Minitest::Test
     result = merchant.revenue("2012-03-12")
 
     assert_equal 528913, result
+  end
 
+  def test_it_can_find_its_favorite_customer
+    repo = engine.merchant_repository
+    merchant = repo.id("2")
+    result = merchant.favorite_customer
 
+    assert_equal "Joey", result.first_name
   end
 
 end
