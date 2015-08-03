@@ -7,7 +7,7 @@ class InvoiceItemRepository < Repository
   end
 
   def find_by_id(id)
-    find_by(id: id)
+    id(id)
   end
 
   def find_by_item_id(item_id)

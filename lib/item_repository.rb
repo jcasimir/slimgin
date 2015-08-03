@@ -5,6 +5,10 @@ class ItemRepository < Repository
     Item.new(repository, attributes)
   end
 
+  def find_by_id(id)
+    id(id)
+  end
+
   def find_by_name(name)
     find_by(name: name)
   end

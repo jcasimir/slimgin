@@ -7,12 +7,12 @@ class CustomerRepository < Repository
     Customer.new repository, attributes
   end
 
-  def invoices_for_customer(customer_id)
-    engine.invoices_for_customer(customer_id)
+  def find_by_id(id)
+    id(id)
   end
 
-  def find_by_id(id)
-    find_by(id: id)
+  def invoices_for_customer(customer_id)
+    engine.invoices_for_customer(customer_id)
   end
 
   def find_by_first_name(name)
