@@ -1,3 +1,5 @@
+require "csv"
+
 class Repository
   attr_accessor :engine, :location, :database
 
@@ -13,12 +15,12 @@ class Repository
 
   def random
     id = database.keys.sample
-    hash = {id => database[id]}
+    database[id]
   end
 
   def find_by search_attribute
     all = find_all_by(search_attribute)
-    all.values[0]
+    all[0]
   end
 
   def find_all_by search_attribute
@@ -28,7 +30,7 @@ class Repository
     database.each do |id, attributes|
       out[id] = attributes if attributes.send(key) == value
     end
-    out
+    out.values
   end
 
   def load_db
@@ -36,12 +38,17 @@ class Repository
     CSV.foreach location, :headers => true do |row|
       id = row.fields[0]
       row_as_hash = row.to_hash.tap{|x| x.delete("id")}
-      db[id] = my_type(self, row_as_hash)
+      db[id.to_i] = my_type(self, row_as_hash)
     end
     db
   end
 
-  def id id_number
+  def id (id_number)
     database[id_number]
   end
+
+  def inspect
+    "#<#{self.class} #{@database.size} rows>"
+  end
+
 end

@@ -1,23 +1,24 @@
 require_relative 'test_helper'
 require_relative '../lib/invoice'
+require_relative '../lib/sales_engine'
 
 class InvoiceTest < Minitest::Test
   attr_reader :engine
 
   def setup
-    @engine = SalesEngine.new
+    @engine = SalesEngine.new("./test/fixtures")
     engine.startup
   end
 
   def test_it_can_find_the_associated_merchant
     repo = engine.invoice_repository
-    invoice = repo.id("1")
+    invoice = repo.id(1)
     assert_equal "Schroeder-Jerde", invoice.merchant.name
   end
 
   def test_transactions_finds_accociated_transactions_for_an_invoice
     repo = engine.invoice_repository
-    invoice = repo.id('1')
+    invoice = repo.id(1)
 
     transactions = invoice.transactions
 
@@ -26,7 +27,7 @@ class InvoiceTest < Minitest::Test
 
   def test_invoice_items_finds_associated_invoice_items_for_an_invoice
     repo = engine.invoice_repository
-    invoice = repo.id("1")
+    invoice = repo.id(1)
     invoice_items = invoice.invoice_items
 
     assert_equal 8, invoice_items.size
@@ -34,9 +35,8 @@ class InvoiceTest < Minitest::Test
 
   def test_items_finds_associated_items_for_an_invoice
     repo = engine.invoice_repository
-    invoice = repo.id("1")
+    invoice = repo.id(1)
     items = invoice.items
-
     assert_equal 8, items.size
   end
 
@@ -54,15 +54,15 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_has_a_customer_id
-    invoice = Invoice.new nil, {customer_id: "1"}
+    invoice = Invoice.new nil, {customer_id: 1}
 
-    assert_equal "1", invoice.customer_id
+    assert_equal 1, invoice.customer_id
   end
 
   def test_it_has_a_merchant_id
-    invoice = Invoice.new nil, {merchant_id: "123"}
+    invoice = Invoice.new nil, {merchant_id: 123}
 
-    assert_equal "123", invoice.merchant_id
+    assert_equal 123, invoice.merchant_id
   end
 
   def test_it_has_status
@@ -77,15 +77,8 @@ class InvoiceTest < Minitest::Test
     assert_equal "2012-03-25 09:54:09 UTC", invoice.created_at.to_s
   end
 
-  def test_created_at_time_is_time_class
-    skip
-    invoice = Invoice.new nil, {created_at: "1994-04-20 12:35:09 UTC"}
-
-    assert_kind_of Time, invoice.created_at
-  end
-
   def test_it_can_give_a_hash_of_attributes
-    invoice = Invoice.new nil, {customer_id: "856", merchant_id: "987", status: "shipped"}
+    invoice = Invoice.new nil, {customer_id: 856, merchant_id: 987, status: "shipped"}
 
     assert_kind_of Hash, invoice.attributes
   end
@@ -97,43 +90,43 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_belongs_to_an_engine
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
     assert_kind_of SalesEngine, invoice.repository.engine
   end
 
   def test_knows_what_engine_it_belongs_to
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
     assert_equal invoice.repository.engine, engine
   end
 
   def test_it_has_a_customer_repository
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
     assert_kind_of CustomerRepository, invoice.customer_repository
   end
 
   def test_knows_the_customer_repository_of_the_engine_to_which_it_belongs
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
     assert_equal invoice.customer_repository, engine.customer_repository
   end
 
   def test_the_engine_to_which_it_belongs_refers_to_a_customer
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
-    assert_kind_of Customer, engine.customer_repository.id("1")
+    assert_kind_of Customer, engine.customer_repository.id(1)
   end
 
   def test_it_refers_to_a_customer
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
-    assert_kind_of Customer, invoice.customer_repository.id("1")
+    assert_kind_of Customer, invoice.customer_repository.id(1)
   end
 
   def test_it_knows_the_customer_to_which_it_refers
-    invoice = engine.invoice_repository.id("1")
+    invoice = engine.invoice_repository.id(1)
 
     assert_equal invoice.customer, engine.customer_repository.id(invoice.customer_id)
   end

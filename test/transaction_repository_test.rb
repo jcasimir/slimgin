@@ -8,9 +8,9 @@ class TransactionRepositoryTest < Minitest::Test
 
   def test_loads_the_data
     repo = TransactionRepository.new(nil, "./test/fixtures/transactions.csv")
-    result = repo.database["1"].invoice_id
+    result = repo.database[1].invoice_id
 
-    assert_equal "1", result
+    assert_equal 1, result
   end
 
 end

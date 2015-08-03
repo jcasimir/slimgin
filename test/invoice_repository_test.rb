@@ -1,11 +1,12 @@
 require_relative 'test_helper'
 require_relative '../lib/invoice_repository.rb'
+require_relative '../lib/sales_engine.rb'
 
 class InvoiceRepositoryTest < Minitest::Test
   attr_reader :engine
 
   def setup
-    @engine = SalesEngine.new
+    @engine = SalesEngine.new("./test/fixtures")
     engine.startup
   end
 
@@ -15,7 +16,7 @@ class InvoiceRepositoryTest < Minitest::Test
     result = repo.all_successful_invoices
 
     assert_equal 14, result.size
-    assert_equal Invoice, result["1"].class
+    assert_equal Invoice, result[1].class
   end
 
   def test_it_can_find_pending_invoices
@@ -42,7 +43,7 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_it_can_fetch_an_invoice
     invoice_repo = InvoiceRepository.new engine, "./test/fixtures/invoices.csv"
 
-    assert_kind_of Invoice, invoice_repo.id("1")
+    assert_kind_of Invoice, invoice_repo.id(1)
   end
 
   def test_it_can_fetch_using_all
@@ -75,26 +76,22 @@ class InvoiceRepositoryTest < Minitest::Test
 
     random = invoice_repo.random
 
-    assert_kind_of Hash, random
-    assert random.keys.length == 1
-    assert_kind_of String, random.keys[0]
-    assert random.values.length == 1
-    assert_kind_of Invoice, random.values[0]
+    assert_kind_of Invoice, random
   end
 
   def test_it_can_find_by_attribute
     invoice_repo = InvoiceRepository.new engine, "./test/fixtures/invoices.csv"
 
-    invoices = invoice_repo.find_all_by(merchant_id: "1")
+    invoices = invoice_repo.find_all_by(merchant_id: 1)
 
-    assert_kind_of Hash, invoices
+    assert_kind_of Array, invoices
   end
 
   def test_attributes_found_are_correct
     invoice_repo = InvoiceRepository.new engine, "./test/fixtures/invoices.csv"
 
     invoices = invoice_repo.find_all_by(status: "shipped")
-    invoice = invoices["1"]
+    invoice = invoices[1]
 
     assert_equal "shipped", invoice.status
   end
@@ -110,7 +107,7 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_find_all_returns_all
     invoice_repo = InvoiceRepository.new engine, "./test/fixtures/invoices.csv"
 
-    invoices = invoice_repo.find_all_by(merchant_id: "1")
+    invoices = invoice_repo.find_all_by(merchant_id: 1)
 
     assert_equal 3, invoices.length
   end
@@ -118,9 +115,9 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_find_first_of_multiple
     invoice_repo = InvoiceRepository.new engine, "./test/fixtures/invoices.csv"
 
-    invoices = invoice_repo.find_by(customer_id: "1")
+    invoices = invoice_repo.find_by(customer_id: 1)
 
-    assert_equal "1", invoices.customer_id
+    assert_equal 1, invoices.customer_id
   end
 
   def test_find_all_by_returns_empty_hash_if_no_findings
@@ -128,6 +125,6 @@ class InvoiceRepositoryTest < Minitest::Test
 
     invoices = invoice_repo.find_all_by(customer_id: "666")
 
-    assert_equal({}, invoices)
+    assert_equal([], invoices)
   end
 end

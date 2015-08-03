@@ -1,3 +1,6 @@
+require_relative 'invoice'
+require_relative 'repository'
+
 class InvoiceRepository < Repository
   attr_reader :all_successful_invoices
 
@@ -8,6 +11,34 @@ class InvoiceRepository < Repository
 
   def my_type repository, attributes
     Invoice.new repository, attributes
+  end
+
+  def find_by_id(id)
+    find_by(id: id)
+  end
+
+  def find_by_customer_id(customer_id)
+    find_by(customer_id: customer_id)
+  end
+
+  def find_all_by_customer_id(customer_id)
+    find_all_by(customer_id: customer_id)
+  end
+
+  def find_by_merchant_id(merchant_id)
+    find_by(merchant_id: merchant_id)
+  end
+
+  def find_all_by_merchant_id(merchant_id)
+    find_all_by(merchant_id: merchant_id)
+  end
+
+  def find_by_status(status)
+    find_by(status: status)
+  end
+
+  def find_all_by_status(status)
+    find_all_by(status: status)
   end
 
   def merchant_for_an_invoice(merchant_id)
@@ -35,7 +66,7 @@ class InvoiceRepository < Repository
   end
 
   def select_for_a_date(date, current_invoices = all_successful_invoices)
-    current_invoices.select { |id, invoice| invoice.created_at.include?(date) }
+    current_invoices.select { |id, invoice| invoice.created_at.to_s.include?(date.to_s) }
   end
 
   def pending_invoices

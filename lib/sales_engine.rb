@@ -1,17 +1,30 @@
+require_relative "customer_repository"
 require_relative "invoice_item_repository"
+require_relative "item_repository"
+require_relative "invoice_repository"
+require_relative "merchant_repository"
+require_relative "transaction_repository"
+
 
 class SalesEngine
+  FILE_PATH = "../sales_engine/data/"
   attr_accessor :locations, :merchant_repository, :invoice_repository,
                 :item_repository, :invoice_item_repository, :customer_repository,
                 :transaction_repository
+  attr_reader :file_path
+
+  def initialize(file_path = FILE_PATH)
+    @file_path = file_path
+  end
+
   def startup
     @locations = {
-      customer_repository: "./test/fixtures/customers.csv",
-      invoice_repository: "./test/fixtures/invoices.csv",
-      merchant_repository: "./test/fixtures/merchants.csv",
-      item_repository: "./test/fixtures/items.csv",
-      transaction_repository: "./test/fixtures/transactions.csv",
-      invoice_item_repository: "./test/fixtures/invoice_items.csv",
+      customer_repository: "#{file_path}/customers.csv",
+      invoice_repository: "#{file_path}/invoices.csv",
+      merchant_repository: "#{file_path}/merchants.csv",
+      item_repository: "#{file_path}/items.csv",
+      transaction_repository: "#{file_path}/transactions.csv",
+      invoice_item_repository: "#{file_path}/invoice_items.csv",
     }
     @customer_repository     = CustomerRepository.new self, locations[:customer_repository]
     @merchant_repository     = MerchantRepository.new self, locations[:merchant_repository]
@@ -46,9 +59,10 @@ class SalesEngine
 
   def items_for_an_invoice(invoice_id)
     invoice_items = invoice_items_for_an_invoice(invoice_id)
-    items = invoice_items.map do |invoice_item_id, invoice_item|
-      item_repository.find_all_by(id: invoice_item.item_id)
+    items = invoice_items.map do |invoice_item|
+      item_repository.id(invoice_item.item_id)
     end
+    items.flatten
   end
 
   def invoice_for_invoice_item(invoice_id)
@@ -89,7 +103,7 @@ class SalesEngine
   end
 
   def invoice_revenue(invoice_id)
-    invoice_items_for_an_invoice(invoice_id).map do |invoice_item_id, invoice_item|
+    invoice_items_for_an_invoice(invoice_id).map do |invoice_item|
       invoice_item.calculate_total_price
     end
   end
@@ -102,8 +116,8 @@ class SalesEngine
   end
 
   def total_items(invoice_id)
-    invoice_items_for_an_invoice(invoice_id).map do |invoice_item_id, invoice_item|
-      invoice_item.quantity.to_i
+    invoice_items_for_an_invoice(invoice_id).map do |invoice_item|
+      invoice_item.quantity
     end
   end
 

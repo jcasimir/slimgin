@@ -1,17 +1,19 @@
 require_relative 'test_helper'
+require_relative '../lib/sales_engine'
 require_relative '../lib/customer'
+
 
 class CustomerTest < Minitest::Test
   attr_reader :engine
 
   def setup
-    @engine = SalesEngine.new
+    @engine = SalesEngine.new("./test/fixtures")
     engine.startup
   end
 
   def test_it_can_find_its_invoices
     repo = engine.customer_repository
-    customer = repo.id('1')
+    customer = repo.id(1)
 
     invoices = customer.invoices
 
@@ -39,25 +41,12 @@ class CustomerTest < Minitest::Test
     assert_equal "Ondricka", customer.last_name
   end
 
-  def test_it_can_return_its_created_at_time_as_timestamp
-    skip
-    customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
-
-    assert_kind_of Time, customer.created_at
-  end
-
   def test_it_can_return_its_created_at_time_as_string
     customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
 
     assert_equal "2015-03-27 14:15:09 UTC", customer.created_at.to_s
   end
 
-  def test_it_can_return_its_updated_at_time_as_timestamp
-    skip
-    customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
-
-    assert_kind_of Time, customer.updated_at
-  end
 
   def test_it_can_return_its_updated_at_time_as_string
     customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
@@ -73,12 +62,4 @@ class CustomerTest < Minitest::Test
     assert_equal "hello world", parsed
   end
 
-  def test_parse_turns_a_date_string_into_date_class
-    skip
-    customer = Customer.new(nil, first_name: "Joey", last_name: "Ondricka", created_at: "2015-03-27 14:15:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
-
-    parsed = customer.parse "2015-03-07 14:15:09 UTC"
-
-    assert_kind_of Time, parsed
-  end
 end

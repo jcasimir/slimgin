@@ -24,7 +24,7 @@ class Invoice < DataInstance
   end
 
   def successful?
-    transactions.values.any? { |transaction| transaction.result == "success" }
+    transactions.any? { |transaction| transaction.result == "success" }
   end
 
 

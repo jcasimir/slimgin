@@ -11,13 +11,13 @@ class CustomerRepositoryTest < Minitest::Test
   def test_retrieves_customer_from_database
     customer_repo = CustomerRepository.new nil, "./test/fixtures/customers.csv"
 
-    assert_kind_of Customer, customer_repo.id("1")
+    assert_kind_of Customer, customer_repo.id(1)
   end
 
   def test_customer_retrieves_repository
     customer_repo = CustomerRepository.new nil, "./test/fixtures/customers.csv"
 
-    customer = customer_repo.id("1")
+    customer = customer_repo.id(1)
 
     assert_kind_of CustomerRepository, customer.repository
   end

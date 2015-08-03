@@ -15,7 +15,7 @@ class DataInstance
     out = {}
     instance_variables.each do |name|
       non_instance_name = name.to_s.delete("@").to_sym
-      out[non_instance_name] = instance_variable_get name
+      out[non_instance_name] = instance_variable_get(name)
     end
     out
   end
@@ -23,6 +23,7 @@ class DataInstance
   def parse input
     time = Time.parse(input) rescue nil
     input = time if input == time.to_s
+    input = input.to_i if input.to_i.to_s == input
     input
   end
 
@@ -33,5 +34,5 @@ class DataInstance
   def id
     repository.database.key(self)
   end
-  
+
 end

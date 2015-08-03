@@ -1,11 +1,12 @@
 require_relative 'test_helper'
 require_relative '../lib/item'
+require_relative '../lib/sales_engine'
 
 class ItemTest < Minitest::Test
   attr_reader :engine
 
   def setup
-    @engine = SalesEngine.new
+    @engine = SalesEngine.new("./test/fixtures")
     engine.startup
   end
 
@@ -16,7 +17,7 @@ class ItemTest < Minitest::Test
 
   def test_it_can_find_its_invoice_items
     repo = engine.item_repository
-    item = repo.id("539")
+    item = repo.id(539)
 
     invoice_items = item.invoice_items
 
@@ -25,7 +26,7 @@ class ItemTest < Minitest::Test
 
   def test_it_can_find_its_merchant
     repo = engine.item_repository
-    item = repo.id("539")
+    item = repo.id(539)
 
     merchant = item.merchant
 

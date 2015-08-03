@@ -1,6 +1,21 @@
+require_relative 'merchant'
+require_relative 'repository'
+
 class MerchantRepository < Repository
   def my_type repository, attributes
     Merchant.new repository, attributes
+  end
+
+  def find_by_id(id)
+    find_by(id: id)
+  end
+
+  def find_by_name(name)
+    find_by(name: name)
+  end
+
+  def find_all_by_name(name)
+    find_all_by(name: name)
   end
 
   def invoices_for_a_merchant(merchant_id)

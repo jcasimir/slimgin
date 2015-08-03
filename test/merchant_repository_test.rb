@@ -1,11 +1,12 @@
 require_relative 'test_helper'
 require_relative '../lib/merchant_repository'
+require_relative '../lib/sales_engine'
 
 class MerchantRepositoryTest < Minitest::Test
   attr_reader :engine
 
   def setup
-    @engine = SalesEngine.new
+    @engine = SalesEngine.new("./test/fixtures")
     engine.startup
   end
 
@@ -18,7 +19,7 @@ class MerchantRepositoryTest < Minitest::Test
   def test_it_contains_merchants
     merchant_repo = MerchantRepository.new nil, "./test/fixtures/merchants.csv"
 
-    assert_kind_of Merchant, merchant_repo.id("1")
+    assert_kind_of Merchant, merchant_repo.id(1)
   end
 
   def test_can_identify_top_X_merchants_by_revenue

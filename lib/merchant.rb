@@ -1,3 +1,5 @@
+require_relative "data_instance"
+
 class Merchant < DataInstance
   attr_accessor :name
 
