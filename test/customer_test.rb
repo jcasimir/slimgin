@@ -20,6 +20,15 @@ class CustomerTest < Minitest::Test
     assert_equal 8, invoices.size
   end
 
+  def test_returns_associated_transactions
+    repo = engine.customer_repository
+    customer = repo.id(1)
+
+    transactions = customer.transactions
+
+    assert_equal 8, transactions.size
+  end
+
 
 
   ##########PREVIOUS DEVELOPER ############

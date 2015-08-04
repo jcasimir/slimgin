@@ -33,5 +33,14 @@ class ItemTest < Minitest::Test
     assert_equal "Klein, Rempel and Jones", merchant.name
   end
 
+  def test_it_can_find_the_best_day_for_an_item
+    repo = engine.item_repository
+
+    item = repo.find_by_id(539)
+
+    day = item.best_day
+
+    assert_equal "2012-03-25", day.to_s
+  end
 
 end
