@@ -6,4 +6,8 @@ class Customer < DataInstance
   def invoices
     repository.invoices_for_customer(id)
   end
+
+  def transactions
+    invoices.flat_map { |invoice| invoice.transactions }
+  end
 end

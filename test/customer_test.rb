@@ -26,7 +26,7 @@ class CustomerTest < Minitest::Test
 
     transactions = customer.transactions
 
-    assert_equal 8, transactions.size
+    assert_equal 9, transactions.size
   end
 
 
