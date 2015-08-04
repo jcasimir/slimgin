@@ -11,7 +11,7 @@ class ItemTest < Minitest::Test
   end
 
   def test_it_initializes_an_item
-    item = Item.new(nil, name: "cake")
+    item = Item.new(nil, name: "cake", unit_price: 123)
     assert_equal "cake", item.name
   end
 

@@ -11,14 +11,14 @@ class InvoiceItemTest < Minitest::Test
   end
 
   def test_it_initializes_an_invoice_item
-    i_item = InvoiceItem.new(nil, {item_id: 1})
+    i_item = InvoiceItem.new(nil, {item_id: 1, unit_price: 123})
 
     assert_equal 1, i_item.item_id
   end
 
   def test_it_can_find_its_invoice
     repo = engine.invoice_item_repository
-    i_item = InvoiceItem.new(repo, {invoice_id: 1})
+    i_item = InvoiceItem.new(repo, {invoice_id: 1, unit_price: 123})
 
     invoice = i_item.invoice
     assert_equal 1, invoice.id
@@ -26,7 +26,7 @@ class InvoiceItemTest < Minitest::Test
 
   def test_it_can_find_its_item
     repo = engine.invoice_item_repository
-    i_item = InvoiceItem.new(repo, {item_id: 539})
+    i_item = InvoiceItem.new(repo, {item_id: 539, unit_price: 123})
 
     item = i_item.item
 
@@ -38,7 +38,7 @@ class InvoiceItemTest < Minitest::Test
     invoice_item = repo.id(1)
 
     result = invoice_item.calculate_total_price
-    assert_equal 68175, result
+    assert_equal 681.75, result
   end
 
 end

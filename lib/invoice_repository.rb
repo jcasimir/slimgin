@@ -66,6 +66,7 @@ class InvoiceRepository < Repository
   end
 
   def select_for_a_date(date, current_invoices = all_successful_invoices)
+    return current_invoices if date == ''
     current_invoices.select { |id, invoice| invoice.created_at.to_s.include?(date.to_s) }
   end
 

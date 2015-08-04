@@ -43,7 +43,7 @@ class MerchantRepositoryTest < Minitest::Test
   def test_it_can_calculate_the_total_revenue_for_a_given_date
     repo = engine.merchant_repository
 
-    assert_equal 2106777, repo.revenue("2012-03-25")
+    assert_equal 21067.77, repo.revenue("2012-03-25")
   end
 
 end

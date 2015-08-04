@@ -37,7 +37,7 @@ class MerchantTest < Minitest::Test
     merchant = repo.id(1)
     result = merchant.revenue
 
-    assert_equal 2106777, result
+    assert_equal 21067.77, result
   end
 
   def test_it_can_find_its_total_items
@@ -53,7 +53,7 @@ class MerchantTest < Minitest::Test
     merchant = repo.id(2)
     result = merchant.revenue("2012-03-12")
 
-    assert_equal 528913, result
+    assert_equal 5289.13, result
   end
 
   def test_it_can_find_its_favorite_customer
