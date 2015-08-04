@@ -60,4 +60,12 @@ class ItemRepository < Repository
     end
   end
 
+  def most_items(top_x)
+    ids_and_quantities = engine.quantity_of_items
+    sorted = ids_and_quantities.to_a.sort_by { |id_and_quantity| id_and_quantity[1] }
+                        .reverse
+                        .first(top_x)
+                        .map { |id_and_quantity| find_by_id(id_and_quantity[0])}
+  end
+
 end

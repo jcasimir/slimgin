@@ -51,12 +51,26 @@ class InvoiceItemRepository < Repository
     engine.item_for_invoice_item(item_id)
   end
 
-  def invoice_items_and_total_prices
+  def item_ids_and_total_prices
     totals = Hash.new(0)
     all.each do |id, inv_item|
       totals[inv_item.item_id] += inv_item.total_price
     end
     totals
+  end
+
+  def item_ids_and_quantities(successful_invoices)
+    totals = Hash.new(0)
+    successful_invoice_items(successful_invoices).each do |id, inv_item|
+      totals[inv_item.item_id] += inv_item.quantity
+    end
+    totals
+  end
+
+  def successful_invoice_items(successful_invoices)
+    all.select do |id, inv_item|
+      successful_invoices.keys.include?(inv_item.invoice_id)
+    end
   end
 
 end

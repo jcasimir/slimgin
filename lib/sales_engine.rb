@@ -144,7 +144,12 @@ class SalesEngine
   end
 
   def revenue_of_items
-    invoice_item_repository.invoice_items_and_total_prices
+    invoice_item_repository.item_ids_and_total_prices
+  end
+
+  def quantity_of_items
+    successfuls = invoice_repository.all_successful_invoices
+    invoice_item_repository.item_ids_and_quantities(successfuls)
   end
 
 end

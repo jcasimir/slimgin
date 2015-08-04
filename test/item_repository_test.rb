@@ -29,4 +29,5 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal [16,5], top_items.map { |item| item.id }
 
   end
+
 end
