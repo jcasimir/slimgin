@@ -104,7 +104,7 @@ class SalesEngine
 
   def invoice_revenue(invoice_id)
     invoice_items_for_an_invoice(invoice_id).map do |invoice_item|
-      invoice_item.calculate_total_price
+      invoice_item.total_price
     end
   end
 
@@ -141,6 +141,10 @@ class SalesEngine
     invoice_repository.select_for_a_merchant(merchant_id, pending_invoices)
                     .map { |invoice_id, invoice| invoice.customer_id }
                     .map { |customer_id| customer_repository.find_by(id: customer_id) }
+  end
+
+  def revenue_of_items
+    invoice_item_repository.invoice_items_and_total_prices
   end
 
 end

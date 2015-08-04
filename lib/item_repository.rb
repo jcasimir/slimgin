@@ -50,4 +50,14 @@ class ItemRepository < Repository
     engine.merchant_for_an_item(merchant_id)
   end
 
+  def most_revenue(top_x)
+    revenue_and_items = engine.revenue_of_items
+    selected = revenue_and_items.to_a.sort_by{|id_and_price| id_and_price[1]}
+                    .reverse
+                    .first(top_x)
+    selected.map do |id_and_price|
+      find_by_id(id_and_price[0])
+    end
+  end
+
 end

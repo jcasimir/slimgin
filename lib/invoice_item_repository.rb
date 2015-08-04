@@ -51,4 +51,12 @@ class InvoiceItemRepository < Repository
     engine.item_for_invoice_item(item_id)
   end
 
+  def invoice_items_and_total_prices
+    totals = Hash.new(0)
+    all.each do |id, inv_item|
+      totals[inv_item.item_id] += inv_item.total_price
+    end
+    totals
+  end
+
 end

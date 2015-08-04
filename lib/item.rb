@@ -15,4 +15,5 @@ class Item < DataInstance
   def merchant
     repository.merchant_for_an_item(merchant_id)
   end
+  
 end
