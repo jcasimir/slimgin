@@ -55,7 +55,7 @@ class ItemRepository < Repository
     selected = revenue_and_items.to_a.sort_by{|id_and_price| id_and_price[1]}
                     .reverse
                     .first(top_x)
-    selected.map do |id_and_price|
+                    selected.map do |id_and_price|
       find_by_id(id_and_price[0])
     end
   end
@@ -68,8 +68,8 @@ class ItemRepository < Repository
                         .map { |id_and_quantity| find_by_id(id_and_quantity[0])}
   end
 
-  def successful_invoice_items(successful_invoices)
-    engine.successful_invoice_items(successful_invoices)
+  def successful_invoice_items
+    engine.successful_invoice_items
   end
 
   def successful_invoices

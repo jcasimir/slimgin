@@ -51,7 +51,7 @@ class MerchantTest < Minitest::Test
   def test_it_can_find_its_revenue_for_a_date
     repo = engine.merchant_repository
     merchant = repo.id(2)
-    result = merchant.revenue("2012-03-12")
+    result = merchant.revenue(Date.parse("2012-03-12"))
 
     assert_equal 5289.13, result
   end

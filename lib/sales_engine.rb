@@ -26,12 +26,12 @@ class SalesEngine
       transaction_repository: "#{file_path}/transactions.csv",
       invoice_item_repository: "#{file_path}/invoice_items.csv",
     }
-    @customer_repository     = CustomerRepository.new self, locations[:customer_repository]
-    @merchant_repository     = MerchantRepository.new self, locations[:merchant_repository]
-    @item_repository         = ItemRepository.new self, locations[:item_repository]
-    @transaction_repository  = TransactionRepository.new self, locations[:transaction_repository]
-    @invoice_repository      = InvoiceRepository.new self, locations[:invoice_repository]
-    @invoice_item_repository = InvoiceItemRepository.new self, locations[:invoice_item_repository]
+    @customer_repository     ||= CustomerRepository.new self, locations[:customer_repository]
+    @merchant_repository     ||= MerchantRepository.new self, locations[:merchant_repository]
+    @item_repository         ||= ItemRepository.new self, locations[:item_repository]
+    @transaction_repository  ||= TransactionRepository.new self, locations[:transaction_repository]
+    @invoice_repository      ||= InvoiceRepository.new self, locations[:invoice_repository]
+    @invoice_item_repository ||= InvoiceItemRepository.new self, locations[:invoice_item_repository]
   end
 
 
@@ -96,10 +96,21 @@ class SalesEngine
   end
 
   def revenue_for_a_merchant(merchant_id, date)
-    total = successful_invoices_for_a_merchant(merchant_id, date).map do |invoice_id, invoice|
-        invoice_revenue(invoice_id)
+    merchant_invoices = invoice_repository.successful_merchant_invoices[merchant_id]
+    total_invoices = merchant_invoices
+
+     unless date == ''
+       date_invoices = invoice_repository.successful_date_invoices[date]
+       date_invoices = [] if date_invoices == nil
+       total_invoices = merchant_invoices & date_invoices
+     end
+
+    return 0 if total_invoices.nil?
+
+    revenue = total_invoices.map do |invoice|
+        invoice_revenue(invoice.id)
     end
-    total.flatten.reduce(:+)
+    revenue.flatten.reduce(:+)
   end
 
   def invoice_revenue(invoice_id)
@@ -109,8 +120,8 @@ class SalesEngine
   end
 
   def total_items_for_a_merchant(merchant_id)
-    total = successful_invoices_for_a_merchant(merchant_id).map do |invoice_id, invoice|
-      total_items(invoice_id)
+    total = invoice_repository.successful_merchant_invoices[merchant_id].map do |invoice|
+      total_items(invoice.id)
     end
     total.flatten.reduce(:+)
   end
@@ -148,12 +159,11 @@ class SalesEngine
   end
 
   def quantity_of_items
-    successfuls = invoice_repository.successful_invoices
-    invoice_item_repository.item_ids_and_quantities(successfuls)
+    invoice_item_repository.item_ids_and_quantities
   end
 
-  def successful_invoice_items(successful_invoices)
-    invoice_item_repository.successful_invoice_items(successful_invoices)
+  def successful_invoice_items
+    invoice_item_repository.successful_invoice_items
   end
 
   def successful_invoices
