@@ -16,19 +16,6 @@ class Merchant < DataInstance
     revenue ||= 0
   end
 
-  # def successful_invoice_items
-  #   invoices_.map do |invoice|
-  #     invoice.invoice_items
-  #   end.flatten
-  # end
-  #
-  # def new_revenue
-  #   successful_invoice_items.reduce(0) do |total, inv_item|
-  #     total + inv_item.total_price
-  #   end
-  # end
-
-
   def total_items
     items = repository.total_items_for_a_merchant(id)
     items ||= 0

@@ -96,10 +96,21 @@ class SalesEngine
   end
 
   def revenue_for_a_merchant(merchant_id, date)
-    total = successful_invoices_for_a_merchant(merchant_id, date).map do |invoice_id, invoice|
-        invoice_revenue(invoice_id)
+    merchant_invoices = invoice_repository.successful_merchant_invoices[merchant_id]
+    total_invoices = merchant_invoices
+
+     unless date == ''
+       date_invoices = invoice_repository.successful_date_invoices[date]
+       date_invoices = [] if date_invoices == nil
+       total_invoices = merchant_invoices & date_invoices
+     end
+
+    return 0 if total_invoices.nil?
+
+    revenue = total_invoices.map do |invoice|
+        invoice_revenue(invoice.id)
     end
-    total.flatten.reduce(:+)
+    revenue.flatten.reduce(:+)
   end
 
   def invoice_revenue(invoice_id)
@@ -109,8 +120,8 @@ class SalesEngine
   end
 
   def total_items_for_a_merchant(merchant_id)
-    total = successful_invoices_for_a_merchant(merchant_id).map do |invoice_id, invoice|
-      total_items(invoice_id)
+    total = invoice_repository.successful_merchant_invoices[merchant_id].map do |invoice|
+      total_items(invoice.id)
     end
     total.flatten.reduce(:+)
   end
