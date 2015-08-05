@@ -26,12 +26,12 @@ class SalesEngine
       transaction_repository: "#{file_path}/transactions.csv",
       invoice_item_repository: "#{file_path}/invoice_items.csv",
     }
-    @customer_repository     = CustomerRepository.new self, locations[:customer_repository]
-    @merchant_repository     = MerchantRepository.new self, locations[:merchant_repository]
-    @item_repository         = ItemRepository.new self, locations[:item_repository]
-    @transaction_repository  = TransactionRepository.new self, locations[:transaction_repository]
-    @invoice_repository      = InvoiceRepository.new self, locations[:invoice_repository]
-    @invoice_item_repository = InvoiceItemRepository.new self, locations[:invoice_item_repository]
+    @customer_repository     ||= CustomerRepository.new self, locations[:customer_repository]
+    @merchant_repository     ||= MerchantRepository.new self, locations[:merchant_repository]
+    @item_repository         ||= ItemRepository.new self, locations[:item_repository]
+    @transaction_repository  ||= TransactionRepository.new self, locations[:transaction_repository]
+    @invoice_repository      ||= InvoiceRepository.new self, locations[:invoice_repository]
+    @invoice_item_repository ||= InvoiceItemRepository.new self, locations[:invoice_item_repository]
   end
 
 
@@ -148,12 +148,11 @@ class SalesEngine
   end
 
   def quantity_of_items
-    successfuls = invoice_repository.successful_invoices
-    invoice_item_repository.item_ids_and_quantities(successfuls)
+    invoice_item_repository.item_ids_and_quantities
   end
 
-  def successful_invoice_items(successful_invoices)
-    invoice_item_repository.successful_invoice_items(successful_invoices)
+  def successful_invoice_items
+    invoice_item_repository.successful_invoice_items
   end
 
   def successful_invoices
