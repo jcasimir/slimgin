@@ -29,6 +29,16 @@ class CustomerTest < Minitest::Test
     assert_equal 9, transactions.size
   end
 
+  def test_returns_favorite_merchant
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    repo = sales_engine.customer_repository
+    customer = repo.id(2)
+
+    merchant = customer.favorite_merchant
+
+    assert_equal "Shields, Hirthe and Smith", merchant.name
+  end
 
 
   ##########PREVIOUS DEVELOPER ############
