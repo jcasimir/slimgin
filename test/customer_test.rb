@@ -20,6 +20,23 @@ class CustomerTest < Minitest::Test
     assert_equal 8, invoices.size
   end
 
+  def test_returns_associated_transactions
+    repo = engine.customer_repository
+    customer = repo.id(1)
+
+    transactions = customer.transactions
+
+    assert_equal 9, transactions.size
+  end
+
+  def test_returns_favorite_merchant
+    repo = engine.customer_repository
+    customer = repo.id(1)
+
+    merchant = customer.favorite_merchant
+
+    assert_equal "Schroeder-Jerde", merchant.name
+  end
 
 
   ##########PREVIOUS DEVELOPER ############

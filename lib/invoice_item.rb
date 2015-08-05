@@ -18,7 +18,7 @@ class InvoiceItem < DataInstance
   end
 
   def total_price
-    quantity.to_i * BigDecimal.new(unit_price)
+    quantity.to_i * unit_price
   end
 
 end

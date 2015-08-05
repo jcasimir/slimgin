@@ -13,7 +13,7 @@ class InvoiceRepositoryTest < Minitest::Test
 
   def test_it_can_find_all_successful_invoices
     repo = engine.invoice_repository
-    result = repo.all_successful_invoices
+    result = repo.successful_invoices
 
     assert_equal 14, result.size
     assert_equal Invoice, result[1].class
@@ -24,6 +24,43 @@ class InvoiceRepositoryTest < Minitest::Test
     result = repo.pending_invoices
 
     assert_equal 6, result.size
+  end
+
+  def test_can_create_an_invoice
+    s_engine = SalesEngine.new("./test/fixtures")
+    s_engine.startup
+    repo = s_engine.invoice_repository
+    count = repo.all.values.size
+    item1 = Item.new(s_engine.item_repository, id: 99, unit_price: 1, created_at: Time.now, updated_at: Time.now )
+    item2 = Item.new(s_engine.item_repository, id: 999, unit_price: 1, created_at: Time.now, updated_at: Time.now)
+    customer = s_engine.customer_repository.find_by_id(1)
+    merchant = s_engine.merchant_repository.find_by_id(1)
+
+    invoice = repo.create(customer: customer, merchant: merchant, status: "shipped",
+                         items: [item1, item2, item1])
+
+    assert_equal (count + 1), repo.all.values.size
+
+  end
+
+  def test_it_can_charge_a_credit_card
+    s_engine = SalesEngine.new("./test/fixtures")
+    s_engine.startup
+    repo = s_engine.invoice_repository
+    count = repo.all.values.size
+    item1 = Item.new(s_engine.item_repository, id: 99, unit_price: 1, created_at: Time.now, updated_at: Time.now )
+    item2 = Item.new(s_engine.item_repository, id: 999, unit_price: 1, created_at: Time.now, updated_at: Time.now)
+    customer = s_engine.customer_repository.find_by_id(1)
+    merchant = s_engine.merchant_repository.find_by_id(1)
+
+    invoice = repo.create(customer: customer, merchant: merchant, status: "shipped",
+                         items: [item1, item2, item1])
+
+    args = { credit_card_number: "4444333322221111",
+               credit_card_expiration: "10/13", result: "success" }
+    invoice.charge(args)
+
+    assert invoice.transactions.any? { |transaction| transaction.credit_card_number == 4444333322221111 }
   end
 
 

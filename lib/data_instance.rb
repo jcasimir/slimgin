@@ -23,7 +23,7 @@ class DataInstance
   def parse input
     time = Time.parse(input) rescue nil
     input = time if input == time.to_s
-    input = input.to_i if input.to_i.to_s == input
+    input = input.to_i if (input.to_i.to_s == input) && input.length < 14
     input
   end
 

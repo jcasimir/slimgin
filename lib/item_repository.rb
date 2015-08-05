@@ -68,4 +68,12 @@ class ItemRepository < Repository
                         .map { |id_and_quantity| find_by_id(id_and_quantity[0])}
   end
 
+  def successful_invoice_items(successful_invoices)
+    engine.successful_invoice_items(successful_invoices)
+  end
+
+  def successful_invoices
+    engine.successful_invoices
+  end
+
 end

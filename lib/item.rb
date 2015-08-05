@@ -15,5 +15,23 @@ class Item < DataInstance
   def merchant
     repository.merchant_for_an_item(merchant_id)
   end
-  
+
+  def best_day
+    successful_invoices = repository.successful_invoices
+    s_invoice_items = repository.successful_invoice_items(successful_invoices)
+    relevant_invoice_items = s_invoice_items.select do |inv_item_id, invoice_item|
+      invoice_item.item_id == id
+    end
+    date_and_revenue = Hash.new(0)
+    relevant_invoice_items.each do |id, invoice_item|
+      date_and_revenue[invoice_item.invoice.created_at] += invoice_item.total_price
+    end
+      date = date_and_revenue.to_a
+                      .sort_by { |group| group[1] }
+                      .last[0]
+      Date.parse(date.to_s)
+  end
+
+
+
 end
