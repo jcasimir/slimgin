@@ -37,7 +37,7 @@ class Repository
     db = {}
     CSV.foreach location, :headers => true do |row|
       id = row.fields[0]
-      row_as_hash = row.to_hash.tap{|x| x.delete("id")}
+      row_as_hash = row.to_hash
       db[id.to_i] = my_type(self, row_as_hash)
     end
     db
