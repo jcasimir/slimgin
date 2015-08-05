@@ -19,14 +19,14 @@ class ItemRepositoryTest < Minitest::Test
     repo = engine.item_repository
     top_items = repo.most_revenue(2)
 
-    assert_equal [16,5], top_items.map { |item| item.id }
+    assert_equal [1918, 1921], top_items.map { |item| item.id }
   end
 
   def test_it_returns_the_top_x_items_ranked_by_number_sold
     repo = engine.item_repository
     top_items = repo.most_items(2)
 
-    assert_equal [16,5], top_items.map { |item| item.id }
+    assert_equal [1918, 528], top_items.map { |item| item.id }
 
   end
 
