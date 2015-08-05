@@ -30,14 +30,12 @@ class CustomerTest < Minitest::Test
   end
 
   def test_returns_favorite_merchant
-    sales_engine = SalesEngine.new("./data")
-    sales_engine.startup
-    repo = sales_engine.customer_repository
-    customer = repo.id(2)
+    repo = engine.customer_repository
+    customer = repo.id(1)
 
     merchant = customer.favorite_merchant
 
-    assert_equal "Shields, Hirthe and Smith", merchant.name
+    assert_equal "Schroeder-Jerde", merchant.name
   end
 
 

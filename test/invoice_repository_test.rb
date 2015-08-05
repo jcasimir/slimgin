@@ -26,6 +26,24 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal 6, result.size
   end
 
+  def test_can_create_an_invoice
+    s_engine = SalesEngine.new("./test/fixtures")
+    s_engine.startup
+    repo = s_engine.invoice_repository
+    count = repo.all.values.size
+    item1 = Item.new(s_engine.item_repository, id: 99, unit_price: 1, created_at: Time.now, updated_at: Time.now )
+    item2 = Item.new(s_engine.item_repository, id: 999, unit_price: 1, created_at: Time.now, updated_at: Time.now)
+    customer = Customer.new(s_engine.customer_repository, id: 99, first_name: "Joey Joe")
+    merchant = Merchant.new(s_engine.merchant_repository,id: 99, name: "Bobs Burgers")
+
+    repo.create(customer: customer, merchant: merchant, status: "shipped",
+                         items: [item1, item2, item1])
+
+
+    assert_equal (count + 1), repo.all.values.size
+
+  end
+
 
   ##########PREVIOUS DEVELOPER########
   def test_it_is_a_repository

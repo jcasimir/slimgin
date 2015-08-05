@@ -159,4 +159,8 @@ class SalesEngine
   def successful_invoices
     invoice_repository.successful_invoices
   end
+
+  def create_invoice_item(args)
+    invoice_item_repository.create_invoice_item(args)
+  end
 end

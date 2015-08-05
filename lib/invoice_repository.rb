@@ -74,4 +74,25 @@ class InvoiceRepository < Repository
     database.select { |id, invoice| !invoice.successful? }
   end
 
+  def create(args)
+
+    new_args = {id: (all.keys.last + 1), customer_id: args[:customer].id,
+                  merchant_id: args[:merchant].id, status: args[:status],
+                  created_at: Time.now, updated_at: Time.now}
+
+    current_invoice = my_type(self, new_args)
+    items = args[:items]
+    items_and_quantities = Hash.new(0)
+    items.each do |item|
+      items_and_quantities[item] += 1
+    end
+
+    items_and_quantities.each do |item, quantity|
+      invoice_item_args = {item: item, quantity: quantity, invoice_id: (all.keys.last + 1)}
+      engine.create_invoice_item(invoice_item_args)
+    end
+    all[self.all.keys.last + 1] = current_invoice
+    current_invoice
+  end
+
 end
