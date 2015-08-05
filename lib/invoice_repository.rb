@@ -2,15 +2,27 @@ require_relative 'invoice'
 require_relative 'repository'
 
 class InvoiceRepository < Repository
-  attr_reader :successful_invoices
+  attr_reader :successful_invoices, :successful_merchant_invoices, :successful_date_invoices
 
   def initialize(engine, location)
     super
-    @successful_invoices ||= successful_invoices
+    @successful_invoices          ||= successful_invoices
+    @successful_merchant_invoices ||= create_successful_merchant_invoices
+    @successful_date_invoices     ||= create_successful_date_invoices
   end
 
   def my_type repository, attributes
     Invoice.new repository, attributes
+  end
+
+  def create_successful_merchant_invoices
+    successful_invoices.to_a.map { |id, invoice| invoice }
+                            .group_by { |invoice| invoice.merchant_id }
+  end
+
+  def create_successful_date_invoices
+    successful_invoices.to_a.map { |id, invoice| invoice }
+                            .group_by { |invoice| Date.parse(invoice.created_at.to_s) }
   end
 
   def find_by_id(id)
@@ -67,7 +79,7 @@ class InvoiceRepository < Repository
 
   def select_for_a_date(date, current_invoices = successful_invoices)
     return current_invoices if date == ''
-    current_invoices.select { |id, invoice| invoice.created_at.to_s.include?(date.to_s) }
+    current_invoices.select { |invoice_id, invoice| invoice.created_at.to_s.include?(date.to_s) }
   end
 
   def pending_invoices

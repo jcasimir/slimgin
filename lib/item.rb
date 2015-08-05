@@ -17,8 +17,7 @@ class Item < DataInstance
   end
 
   def best_day
-    successful_invoices = repository.successful_invoices
-    s_invoice_items = repository.successful_invoice_items(successful_invoices)
+    s_invoice_items = repository.successful_invoice_items
     relevant_invoice_items = s_invoice_items.select do |inv_item_id, invoice_item|
       invoice_item.item_id == id
     end

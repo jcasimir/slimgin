@@ -2,8 +2,22 @@ require_relative "repository"
 require_relative 'invoice_item'
 
 class InvoiceItemRepository < Repository
+  attr_reader :successful_invoice_items
+
+  def initialize(engine, location)
+    super
+    @successful_invoice_items ||= create_successful_invoice_items
+  end
+
   def my_type(repository, attributes)
     InvoiceItem.new(repository, attributes)
+  end
+
+  def create_successful_invoice_items
+    successful_invoices = engine.invoice_repository.successful_invoices
+    all.select do |id, inv_item|
+      successful_invoices.keys.include?(inv_item.invoice_id)
+    end
   end
 
   def find_by_id(id)
@@ -59,19 +73,15 @@ class InvoiceItemRepository < Repository
     totals
   end
 
-  def item_ids_and_quantities(successful_invoices)
+  def item_ids_and_quantities
     totals = Hash.new(0)
-    successful_invoice_items(successful_invoices).each do |id, inv_item|
+    successful_invoice_items.each do |id, inv_item|
       totals[inv_item.item_id] += inv_item.quantity
     end
     totals
   end
 
-  def successful_invoice_items(successful_invoices)
-    all.select do |id, inv_item|
-      successful_invoices.keys.include?(inv_item.invoice_id)
-    end
-  end
+
 
   def create_invoice_item(args)
 

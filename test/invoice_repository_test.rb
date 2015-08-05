@@ -60,7 +60,7 @@ class InvoiceRepositoryTest < Minitest::Test
                credit_card_expiration: "10/13", result: "success" }
     invoice.charge(args)
 
-    assert invoice.transactions.any? { |transaction| transaction.credit_card_number == 4444333322221111 }
+    assert invoice.transactions.any? { |transaction| transaction.credit_card_number == '4444333322221111' }
   end
 
 
