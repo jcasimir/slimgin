@@ -95,4 +95,10 @@ class InvoiceRepository < Repository
     current_invoice
   end
 
+  def create_transaction(args)
+    engine.create_transaction(args)
+  end
+
+
+
 end

@@ -27,6 +27,16 @@ class Invoice < DataInstance
     transactions.any? { |transaction| transaction.result == "success" }
   end
 
+  def charge(args)
+    new_args = {invoice_id: id}
+    args = args.merge(new_args)
+
+    repository.create_transaction(args)
+
+  end
+
+
+
 
 
 end

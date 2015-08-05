@@ -163,4 +163,9 @@ class SalesEngine
   def create_invoice_item(args)
     invoice_item_repository.create_invoice_item(args)
   end
+
+  def create_transaction(args)
+    transaction_repository.create(args)
+  end
+
 end
