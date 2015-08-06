@@ -13,8 +13,8 @@ class InvoiceRepository < Repository
     @successful_date_invoices     ||= create_successful_date_invoices
   end
 
-  def my_type repository, attributes
-    Invoice.new repository, attributes
+  def my_type(repository, attributes)
+    Invoice.new(repository, attributes)
   end
 
   def create_successful_merchant_invoices
@@ -90,27 +90,39 @@ class InvoiceRepository < Repository
     database.select { |id, invoice| !invoice.successful? }
   end
 
+  def formatted_args(args)
+    { id: (all.keys.last + 1),
+      customer_id: args[:customer].id,
+      merchant_id: args[:merchant].id,
+      status: args[:status],
+      created_at: Time.now,
+      updated_at: Time.now
+    }
+  end
+
   def create(args)
+    new_args = formatted_args(args)
+    new_invoice = my_type(self, new_args)
+    create_invoice_items(args)
+    all[self.all.keys.last + 1] = new_invoice
+    new_invoice
+  end
 
-    new_args = {id: (all.keys.last + 1), customer_id: args[:customer].id,
-                  merchant_id: args[:merchant].id, status: args[:status],
-                  created_at: Time.now, updated_at: Time.now}
-
-    current_invoice = my_type(self, new_args)
+  def create_invoice_items(args)
     items = args[:items]
-    items_and_quantities = Hash.new(0)
-    items.each do |item|
-      items_and_quantities[item] += 1
+    items_and_quantities = items.each_with_object(Hash.new(0)) do |item, object|
+      object[item] += 1
     end
-
     items_and_quantities.each do |item, quantity|
-      invoice_item_args = {item: item,
-                          quantity: quantity,
-                          invoice_id: (all.keys.last + 1)}
-      engine.create_invoice_item(invoice_item_args)
+      create_invoice_item(item, quantity)
     end
-    all[self.all.keys.last + 1] = current_invoice
-    current_invoice
+  end
+
+  def create_invoice_item(item, quantity)
+    args = {item: item,
+            quantity: quantity,
+            invoice_id: (all.keys.last + 1)}
+    engine.create_invoice_item(args)
   end
 
   def create_transaction(args)

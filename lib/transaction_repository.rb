@@ -48,14 +48,17 @@ class TransactionRepository < Repository
   end
 
   def create(args)
-    formatted = { invoice_id: args[:invoice_id],
-                  credit_card_number: args[:credit_card_number],
-                  credit_card_expiration_date: args[:credit_card_expiration],
-                  result: args[:result],
-                  created_at: Time.now,
-                  updated_at: Time.now}
-      new_transaction= Transaction.new(self, formatted)
+      new_transaction = Transaction.new(self, formatted(args))
       all[self.all.keys.last + 1] = new_transaction
   end
 
+  def formatted(args)
+    { invoice_id: args[:invoice_id],
+      credit_card_number: args[:credit_card_number],
+      credit_card_expiration_date: args[:credit_card_expiration],
+      result: args[:result],
+      created_at: Time.now,
+      updated_at: Time.now
+    }
+  end
 end

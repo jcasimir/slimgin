@@ -1,10 +1,12 @@
 require "csv"
 
 class Repository
-  attr_accessor :engine, :location, :database
+  attr_accessor :engine,
+                :location,
+                :database
 
-  def initialize engine, location
-    @engine ||= engine
+  def initialize(engine, location)
+    @engine   ||= engine
     @location ||= File.new(location)
     @database ||= load_db
   end
@@ -18,12 +20,11 @@ class Repository
     database[id]
   end
 
-  def find_by search_attribute
-    all = find_all_by(search_attribute)
-    all[0]
+  def find_by(search_attribute)
+    find_all_by(search_attribute)[0]
   end
 
-  def find_all_by search_attribute
+  def find_all_by(search_attribute)
     key = search_attribute.keys[0]
     value = search_attribute.values[0]
     out = {}
@@ -35,10 +36,9 @@ class Repository
 
   def load_db
     db = {}
-    CSV.foreach location, :headers => true do |row|
+    CSV.foreach(location, :headers => true) do |row|
       id = row.fields[0]
-      row_as_hash = row.to_hash
-      db[id.to_i] = my_type(self, row_as_hash)
+      db[id.to_i] = my_type(self, row.to_hash)
     end
     db
   end

@@ -1,17 +1,20 @@
 class DataInstance
-  attr_reader :repository, :referable, :created_at, :updated_at
+  attr_reader :id,
+              :repository,
+              :referable,
+              :created_at,
+              :updated_at
 
-  def initialize repository, attributes
-
+  def initialize( repository,
+                  attributes )
     @repository = repository
-    @referable = Hash.new
+    @referable  = Hash.new
     attributes.each do |key, value|
       instance_variable_set("@#{key}", parse(value)) unless key.nil?
     end
   end
 
   def attributes
-
     out = {}
     instance_variables.each do |name|
       non_instance_name = name.to_s.delete("@").to_sym
@@ -20,7 +23,7 @@ class DataInstance
     out
   end
 
-  def parse input
+  def parse(input)
     time = Time.parse(input) rescue nil
     input = time if input == time.to_s
     input = input.to_i if (input.to_i.to_s == input) && input.length < 14
@@ -29,10 +32,6 @@ class DataInstance
 
   def customer_repository
     repository.engine.customer_repository
-  end
-
-  def id
-    repository.database.key(self)
   end
 
 end

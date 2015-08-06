@@ -1,5 +1,6 @@
 require_relative "./repository"
 require_relative 'item'
+
 class ItemRepository < Repository
   def my_type(repository, attributes)
     Item.new(repository, attributes)
@@ -55,9 +56,7 @@ class ItemRepository < Repository
     selected = revenue_and_items.to_a.sort_by{|id_and_price| id_and_price[1]}
                     .reverse
                     .first(top_x)
-                    selected.map do |id_and_price|
-      find_by_id(id_and_price[0])
-    end
+    selected.map { |id_and_price| find_by_id(id_and_price[0]) }
   end
 
   def most_items(top_x)
@@ -66,7 +65,7 @@ class ItemRepository < Repository
                         .sort_by { |id_and_quantity| id_and_quantity[1] }
                         .reverse
                         .first(top_x)
-                        .map { |id_and_quantity| find_by_id(id_and_quantity[0])}
+    sorted.map { |id_and_quantity| find_by_id(id_and_quantity[0])}
   end
 
   def successful_invoice_items

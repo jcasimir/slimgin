@@ -14,7 +14,7 @@ class InvoiceItemRepository < Repository
   end
 
   def create_successful_invoice_items
-    successful_invoices = engine.invoice_repository.successful_invoices
+    successful_invoices = engine.successful_invoices
     all.select do |id, inv_item|
       successful_invoices.keys.include?(inv_item.invoice_id)
     end
@@ -81,20 +81,15 @@ class InvoiceItemRepository < Repository
     totals
   end
 
-
-
   def create_invoice_item(args)
-
     formatted_args = { item_id: args[:item].id,
-                      invoice_id: args[:invoice_id], quantity: args[:quantity],
-                      unit_price: args[:item].unit_price, created_at: Time.now,
+                      invoice_id: args[:invoice_id],
+                      quantity: args[:quantity],
+                      unit_price: args[:item].unit_price,
+                      created_at: Time.now,
                       updated_at: Time.now}
-
-
     new_invoice_item = InvoiceItem.new(self, formatted_args)
-
     all[self.all.keys.last + 1] = new_invoice_item
-
   end
 
 end

@@ -2,7 +2,10 @@ require_relative "data_instance"
 require "bigdecimal"
 
 class InvoiceItem < DataInstance
-  attr_reader :item_id, :invoice_id, :quantity, :unit_price
+  attr_reader :item_id,
+              :invoice_id,
+              :quantity,
+              :unit_price
 
   def initialize(repository, attributes)
     super

@@ -1,7 +1,10 @@
 require_relative 'data_instance'
 
 class Item < DataInstance
-  attr_reader :name, :description, :unit_price, :merchant_id
+  attr_reader :name,
+              :description,
+              :unit_price,
+              :merchant_id
 
   def initialize(repository, attributes)
     super
@@ -21,13 +24,18 @@ class Item < DataInstance
     relevant_i_items = s_invoice_items.select do |inv_item_id, invoice_item|
       invoice_item.item_id == id
     end
+      date = date_and_revenue(relevant_i_items).to_a
+      last_date = date.sort_by { |group| group[1] }.last[0]
+      Date.parse(last_date.to_s)
+  end
+
+  def date_and_revenue(invoice_items)
     date_and_revenue = Hash.new(0)
-    relevant_i_items.each do |id, invoice_item|
+    invoice_items.each do |id, invoice_item|
       invoice = invoice_item.invoice
       date_and_revenue[invoice.created_at] += invoice_item.total_price
     end
-      date = date_and_revenue.to_a.sort_by { |group| group[1] }.last[0]
-      Date.parse(date.to_s)
+    date_and_revenue
   end
 
 end
