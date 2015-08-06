@@ -5,7 +5,6 @@ require_relative "invoice_repository"
 require_relative "merchant_repository"
 require_relative "transaction_repository"
 
-
 class SalesEngine
   FILE_PATH = "../sales_engine/data/"
   attr_reader :locations,
