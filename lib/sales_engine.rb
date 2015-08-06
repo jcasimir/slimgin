@@ -8,8 +8,12 @@ require_relative "transaction_repository"
 
 class SalesEngine
   FILE_PATH = "../sales_engine/data/"
-  attr_accessor :locations, :merchant_repository, :invoice_repository,
-                :item_repository, :invoice_item_repository, :customer_repository,
+  attr_accessor :locations,
+                :merchant_repository,
+                :invoice_repository,
+                :item_repository,
+                :invoice_item_repository,
+                :customer_repository,
                 :transaction_repository
   attr_reader :file_path
 
@@ -26,12 +30,18 @@ class SalesEngine
       transaction_repository: "#{file_path}/transactions.csv",
       invoice_item_repository: "#{file_path}/invoice_items.csv",
     }
-    @customer_repository     ||= CustomerRepository.new self, locations[:customer_repository]
-    @merchant_repository     ||= MerchantRepository.new self, locations[:merchant_repository]
-    @item_repository         ||= ItemRepository.new self, locations[:item_repository]
-    @transaction_repository  ||= TransactionRepository.new self, locations[:transaction_repository]
-    @invoice_repository      ||= InvoiceRepository.new self, locations[:invoice_repository]
-    @invoice_item_repository ||= InvoiceItemRepository.new self, locations[:invoice_item_repository]
+    @customer_repository     ||= CustomerRepository.new self,
+                                            locations[:customer_repository]
+    @merchant_repository     ||= MerchantRepository.new self,
+                                            locations[:merchant_repository]
+    @item_repository         ||= ItemRepository.new self,
+                                            locations[:item_repository]
+    @transaction_repository  ||= TransactionRepository.new self,
+                                            locations[:transaction_repository]
+    @invoice_repository      ||= InvoiceRepository.new self,
+                                            locations[:invoice_repository]
+    @invoice_item_repository ||= InvoiceItemRepository.new self,
+                                            locations[:invoice_item_repository]
   end
 
 
@@ -96,17 +106,14 @@ class SalesEngine
   end
 
   def revenue_for_a_merchant(merchant_id, date)
-    merchant_invoices = invoice_repository.successful_merchant_invoices[merchant_id]
-    total_invoices = merchant_invoices
-
+    m_invoices = invoice_repository.successful_merchant_invoices[merchant_id]
+    total_invoices = m_invoices
      unless date == ''
-       date_invoices = invoice_repository.successful_date_invoices[date]
-       date_invoices = [] if date_invoices == nil
-       total_invoices = merchant_invoices & date_invoices
+       d_invoices = invoice_repository.successful_date_invoices[date]
+       d_invoices = [] if d_invoices == nil
+       total_invoices = m_invoices & d_invoices
      end
-
     return 0 if total_invoices.nil?
-
     revenue = total_invoices.map do |invoice|
         invoice_revenue(invoice.id)
     end
@@ -120,7 +127,10 @@ class SalesEngine
   end
 
   def total_items_for_a_merchant(merchant_id)
-    total = invoice_repository.successful_merchant_invoices[merchant_id].map do |invoice|
+    invoices = invoice_repository.successful_merchant_invoices[merchant_id]
+
+    return 0 if invoices.nil?
+    total = invoices.map do |invoice|
       total_items(invoice.id)
     end
     total.flatten.reduce(:+)
@@ -133,15 +143,16 @@ class SalesEngine
   end
 
   def revenue_for_a_date(date)
-    total = invoice_repository.select_for_a_date(date).map do |invoice_id, invoice|
+    invoice_repository.select_for_a_date(date).map do |invoice_id, invoice|
       invoice_revenue(invoice_id)
     end
-    total.flatten.reduce(:+)
+      .flatten.reduce(:+)
   end
 
   def transactions_per_customer_id(merchant_id)
     customer_transactions = Hash.new(0)
-    invoice_repository.select_for_a_merchant(merchant_id).each do |invoice_id, invoice|
+    invoice_repository.select_for_a_merchant(merchant_id)
+                      .each do |invoice_id, invoice|
       customer_transactions[invoice.customer_id] += invoice.transactions.size
     end
     customer_transactions
@@ -151,7 +162,8 @@ class SalesEngine
     pending_invoices = invoice_repository.pending_invoices
     invoice_repository.select_for_a_merchant(merchant_id, pending_invoices)
                     .map { |invoice_id, invoice| invoice.customer_id }
-                    .map { |customer_id| customer_repository.find_by(id: customer_id) }
+                    .map { |customer_id| customer_repository
+                    .find_by(id: customer_id) }
   end
 
   def revenue_of_items

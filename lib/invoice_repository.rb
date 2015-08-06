@@ -2,7 +2,9 @@ require_relative 'invoice'
 require_relative 'repository'
 
 class InvoiceRepository < Repository
-  attr_reader :successful_invoices, :successful_merchant_invoices, :successful_date_invoices
+  attr_reader :successful_invoices,
+              :successful_merchant_invoices,
+              :successful_date_invoices
 
   def initialize(engine, location)
     super
@@ -22,7 +24,7 @@ class InvoiceRepository < Repository
 
   def create_successful_date_invoices
     successful_invoices.to_a.map { |id, invoice| invoice }
-                            .group_by { |invoice| Date.parse(invoice.created_at.to_s) }
+                    .group_by { |invoice| Date.parse(invoice.created_at.to_s) }
   end
 
   def find_by_id(id)
@@ -79,7 +81,9 @@ class InvoiceRepository < Repository
 
   def select_for_a_date(date, current_invoices = successful_invoices)
     return current_invoices if date == ''
-    current_invoices.select { |invoice_id, invoice| invoice.created_at.to_s.include?(date.to_s) }
+    current_invoices.select do |invoice_id, invoice|
+       invoice.created_at.to_s.include?(date.to_s)
+    end
   end
 
   def pending_invoices
@@ -100,7 +104,9 @@ class InvoiceRepository < Repository
     end
 
     items_and_quantities.each do |item, quantity|
-      invoice_item_args = {item: item, quantity: quantity, invoice_id: (all.keys.last + 1)}
+      invoice_item_args = {item: item,
+                          quantity: quantity,
+                          invoice_id: (all.keys.last + 1)}
       engine.create_invoice_item(invoice_item_args)
     end
     all[self.all.keys.last + 1] = current_invoice
@@ -110,7 +116,4 @@ class InvoiceRepository < Repository
   def create_transaction(args)
     engine.create_transaction(args)
   end
-
-
-
 end
