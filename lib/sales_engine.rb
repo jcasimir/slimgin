@@ -4,6 +4,7 @@ require_relative "item_repository"
 require_relative "invoice_repository"
 require_relative "merchant_repository"
 require_relative "transaction_repository"
+require_relative "loader_csv"
 
 class SalesEngine
   FILE_PATH = "../sales_engine/data/"
@@ -15,32 +16,35 @@ class SalesEngine
               :customer_repository,
               :transaction_repository,
               :file_path
+  attr_accessor :db
 
   def initialize(file_path = FILE_PATH)
     @file_path = file_path
+    @locations = {
+      customer_repository:      "#{file_path}/customers.csv",
+      invoice_repository:       "#{file_path}/invoices.csv",
+      merchant_repository:      "#{file_path}/merchants.csv",
+      item_repository:          "#{file_path}/items.csv",
+      transaction_repository:   "#{file_path}/transactions.csv",
+      invoice_item_repository:  "#{file_path}/invoice_items.csv"
+    }
   end
 
   def startup
-    @locations = {
-      customer_repository: "#{file_path}/customers.csv",
-      invoice_repository: "#{file_path}/invoices.csv",
-      merchant_repository: "#{file_path}/merchants.csv",
-      item_repository: "#{file_path}/items.csv",
-      transaction_repository: "#{file_path}/transactions.csv",
-      invoice_item_repository: "#{file_path}/invoice_items.csv",
-    }
-    db_loader(locations)
-    @customer_repository     ||= CustomerRepository.new(self,
+    loaded_csvs = locations.map { |path| LoaderCSV.new(path) }
+    self.db = db_loader(loaded_csvs)
+
+    @customer_repository     = CustomerRepository.new(self,
                                             locations[:customer_repository])
-    @merchant_repository     ||= MerchantRepository.new(self,
+    @merchant_repository     = MerchantRepository.new(self,
                                             locations[:merchant_repository])
-    @item_repository         ||= ItemRepository.new(self,
+    @item_repository         = ItemRepository.new(self,
                                             locations[:item_repository])
-    @transaction_repository  ||= TransactionRepository.new(self,
+    @transaction_repository  = TransactionRepository.new(self,
                                             locations[:transaction_repository])
-    @invoice_repository      ||= InvoiceRepository.new(self,
+    @invoice_repository      = InvoiceRepository.new(self,
                                             locations[:invoice_repository])
-    @invoice_item_repository ||= InvoiceItemRepository.new(self,
+    @invoice_item_repository = InvoiceItemRepository.new(self,
                                             locations[:invoice_item_repository])
   end
 
