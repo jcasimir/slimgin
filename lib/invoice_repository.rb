@@ -6,7 +6,7 @@ class InvoiceRepository < Repository
               :successful_merchant_invoices,
               :successful_date_invoices
 
-  def initialize(engine, location)
+  def initialize(engine)
     super
     # @successful_invoices          ||= successful_invoices
     # @successful_merchant_invoices ||= create_successful_merchant_invoices

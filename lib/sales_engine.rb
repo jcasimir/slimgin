@@ -31,8 +31,9 @@ class SalesEngine
   end
 
   def startup
-    loaded_csvs = locations.map { |path| LoaderCSV.new(path) }
-    self.db = db_loader(loaded_csvs)
+    loaded_csvs = locations.map { |repo, path| [repo, LoaderCSV.new(path)] }.to_h
+    require 'pry'; binding.pry
+    # self.db = db_loader(loaded_csvs)
 
     @customer_repository     = CustomerRepository.new(self)
     @merchant_repository     = MerchantRepository.new(self)

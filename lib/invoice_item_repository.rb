@@ -4,7 +4,7 @@ require_relative 'invoice_item'
 class InvoiceItemRepository < Repository
   attr_reader :successful_invoice_items
 
-  def initialize(engine, location)
+  def initialize(engine)
     super
     # @successful_invoice_items ||= create_successful_invoice_items
   end
