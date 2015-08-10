@@ -6,7 +6,7 @@ class InvoiceItemRepository < Repository
 
   def initialize(engine, location)
     super
-    @successful_invoice_items ||= create_successful_invoice_items
+    # @successful_invoice_items ||= create_successful_invoice_items
   end
 
   def my_type(repository, attributes)
@@ -81,15 +81,15 @@ class InvoiceItemRepository < Repository
     totals
   end
 
-  def create_invoice_item(args)
-    formatted_args = { item_id: args[:item].id,
-                      invoice_id: args[:invoice_id],
-                      quantity: args[:quantity],
-                      unit_price: args[:item].unit_price,
-                      created_at: Time.now,
-                      updated_at: Time.now}
-    new_invoice_item = InvoiceItem.new(self, formatted_args)
-    all[self.all.keys.last + 1] = new_invoice_item
-  end
+  # def create_invoice_item(args)
+  #   formatted_args = { item_id: args[:item].id,
+  #                     invoice_id: args[:invoice_id],
+  #                     quantity: args[:quantity],
+  #                     unit_price: args[:item].unit_price,
+  #                     created_at: Time.now,
+  #                     updated_at: Time.now}
+  #   new_invoice_item = InvoiceItem.new(self, formatted_args)
+  #   all[self.all.keys.last + 1] = new_invoice_item
+  # end
 
 end

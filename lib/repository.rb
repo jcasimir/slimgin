@@ -7,10 +7,10 @@ class Repository
                 :headers
 
   def initialize(engine, location)
+    @headers = []
     @engine   ||= engine
     @location ||= File.new(location)
     @database ||= load_db
-    @headers = []
   end
 
   def all
@@ -37,11 +37,8 @@ class Repository
   end
 
   def load_db
-    db = []
-    CSV.foreach(location, :headers => true) do |row|
-      id = row.fields[0]
-      db[id.to_i] = my_type(self, row.to_hash)
-    end
+    db = CSV.read(location, :headers => true).to_a
+    self.headers = [].concat(db.shift)
     db
   end
 

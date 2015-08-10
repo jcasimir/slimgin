@@ -29,6 +29,7 @@ class SalesEngine
       transaction_repository: "#{file_path}/transactions.csv",
       invoice_item_repository: "#{file_path}/invoice_items.csv",
     }
+    db_loader(locations)
     @customer_repository     ||= CustomerRepository.new(self,
                                             locations[:customer_repository])
     @merchant_repository     ||= MerchantRepository.new(self,
