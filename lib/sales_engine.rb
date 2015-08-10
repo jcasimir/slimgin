@@ -34,18 +34,12 @@ class SalesEngine
     loaded_csvs = locations.map { |path| LoaderCSV.new(path) }
     self.db = db_loader(loaded_csvs)
 
-    @customer_repository     = CustomerRepository.new(self,
-                                            locations[:customer_repository])
-    @merchant_repository     = MerchantRepository.new(self,
-                                            locations[:merchant_repository])
-    @item_repository         = ItemRepository.new(self,
-                                            locations[:item_repository])
-    @transaction_repository  = TransactionRepository.new(self,
-                                            locations[:transaction_repository])
-    @invoice_repository      = InvoiceRepository.new(self,
-                                            locations[:invoice_repository])
-    @invoice_item_repository = InvoiceItemRepository.new(self,
-                                            locations[:invoice_item_repository])
+    @customer_repository     = CustomerRepository.new(self)
+    @merchant_repository     = MerchantRepository.new(self)
+    @item_repository         = ItemRepository.new(self)
+    @transaction_repository  = TransactionRepository.new(self)
+    @invoice_repository      = InvoiceRepository.new(self)
+    @invoice_item_repository = InvoiceItemRepository.new(self)
   end
 
   def invoices_for_a_merchant(merchant_id)

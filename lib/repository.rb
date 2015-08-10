@@ -6,11 +6,9 @@ class Repository
                 :database,
                 :headers
 
-  def initialize(engine, location)
+  def initialize(engine)
     @headers = []
     @engine   ||= engine
-    @location ||= File.new(location)
-    @database ||= load_db
   end
 
   def all
@@ -34,12 +32,6 @@ class Repository
       out[id] = attributes if attributes.send(key) == value
     end
     out.values
-  end
-
-  def load_db
-    db = CSV.read(location, :headers => true).to_a
-    self.headers = [].concat(db.shift)
-    db
   end
 
   def id (id_number)
