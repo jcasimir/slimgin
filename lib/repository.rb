@@ -3,12 +3,14 @@ require "csv"
 class Repository
   attr_accessor :engine,
                 :location,
-                :database
+                :database,
+                :headers
 
   def initialize(engine, location)
     @engine   ||= engine
     @location ||= File.new(location)
     @database ||= load_db
+    @headers = []
   end
 
   def all
@@ -35,7 +37,7 @@ class Repository
   end
 
   def load_db
-    db = {}
+    db = []
     CSV.foreach(location, :headers => true) do |row|
       id = row.fields[0]
       db[id.to_i] = my_type(self, row.to_hash)
