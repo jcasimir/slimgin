@@ -7,7 +7,6 @@ class LoaderDB
                               #    object
     @db = create_db
     add_tables(csv_loaders)
-    # require 'pry'; binding.pry
     populate_tables(csv_loaders)
   end
 
@@ -26,11 +25,11 @@ class LoaderDB
 
   def populate_tables(csv_loaders)
     populate_customer_table(csv_loaders)
-    # self.db.execute(populate_merchant_table(csv_loaders))
-    # self.db.execute(populate_item_table(csv_loaders))
-    # self.db.execute(populate_invoice_item_table(csv_loaders))
-    # self.db.execute(populate_invoice_table(csv_loaders))
-    # self.db.execute(populate_transaction_table(csv_loaders))
+    populate_merchant_table(csv_loaders)
+    populate_item_table(csv_loaders)
+    populate_invoice_item_table(csv_loaders)
+    populate_invoice_table(csv_loaders)
+    populate_transaction_table(csv_loaders)
   end
 
   def create_customer_table
@@ -49,8 +48,7 @@ EOF
 build_table = <<-EOF
 CREATE TABLE merchant_repository (
       "id" int PRIMARY KEY,
-      "first_name" varchar(30),
-      "last_name" varchar(30),
+      "name" varchar(30),
       "created_at" datetime,
       "updated_at" datetime
       );
@@ -118,29 +116,54 @@ EOF
       (id, first_name, last_name, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?)" )
     csv_loaders[:customer_repository].db.each do |row|
-      # require 'pry'; binding.pry
       statement.execute(row)
     end
   end
 
   def populate_merchant_table(csv_loaders)
-
+    statement = db.prepare( "INSERT INTO merchant_repository
+      (id, name, created_at, updated_at)
+      VALUES (?, ?, ?, ?)" )
+    csv_loaders[:merchant_repository].db.each do |row|
+      statement.execute(row)
+    end
   end
 
   def populate_item_table(csv_loaders)
-
+    statement = db.prepare( "INSERT INTO item_repository
+      (id, name, description, unit_price, merchant_id, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)" )
+    csv_loaders[:item_repository].db.each do |row|
+      statement.execute(row)
+    end
   end
 
   def populate_invoice_item_table(csv_loaders)
-
+    statement = db.prepare( "INSERT INTO invoice_item_repository
+      (id, item_id, invoice_id, quantity, unit_price, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)" )
+    csv_loaders[:invoice_item_repository].db.each do |row|
+      statement.execute(row)
+    end
   end
 
   def populate_invoice_table(csv_loaders)
-
+    statement = db.prepare( "INSERT INTO invoice_repository
+      (id, customer_id, merchant_id, status, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?)" )
+    csv_loaders[:invoice_repository].db.each do |row|
+      statement.execute(row)
+    end
   end
 
   def populate_transaction_table(csv_loaders)
-
+    statement = db.prepare( "INSERT INTO transaction_repository
+      (id, invoice_id, credit_card_number, credit_card_expiration_date, result, 
+        created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)" )
+    csv_loaders[:transaction_repository].db.each do |row|
+      statement.execute(row)
+    end
   end
 
 end

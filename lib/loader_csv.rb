@@ -11,7 +11,6 @@ class LoaderCSV
   end
 
   def load(from = path)
-    # require 'pry'; binding.pry
     cur_path = Dir.pwd
     db = CSV.read(path, :headers => true).to_a
     self.headers = [].concat(db.shift)
