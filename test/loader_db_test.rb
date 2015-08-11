@@ -12,4 +12,5 @@ class LoaderDBTest < Minitest::Test
 
     assert_kind_of(SQLite3::Database, loader.db_handle, "db_handle is not a SQLite3 database as expected")
   end
+  
 end

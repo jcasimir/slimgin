@@ -5,9 +5,10 @@ require_relative "invoice_repository"
 require_relative "merchant_repository"
 require_relative "transaction_repository"
 require_relative "loader_csv"
+require_relative "loader_db"
 
 class SalesEngine
-  FILE_PATH = "../sales_engine/data/"
+  FILE_PATH = "../sales_engine/data"
   attr_reader :locations,
               :merchant_repository,
               :invoice_repository,
@@ -32,8 +33,7 @@ class SalesEngine
 
   def startup
     loaded_csvs = locations.map { |repo, path| [repo, LoaderCSV.new(path)] }.to_h
-    require 'pry'; binding.pry
-    # self.db = db_loader(loaded_csvs)
+    self.db = LoaderDB.new(loaded_csvs)
 
     @customer_repository     = CustomerRepository.new(self)
     @merchant_repository     = MerchantRepository.new(self)
