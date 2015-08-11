@@ -27,13 +27,12 @@ require 'date'
       expect(merchant.name).to eq("Alice")
     end
 
-#   def test_it_can_find_invoices
-#     repo = engine.merchant_repository
-#     merchant = repo.id(1)
-#     result = merchant.invoices
+    it "can find invoices" do
+      merchant = @engine.merchant_repository.find_by_id(1)
+      result = merchant.invoices
 
-#     assert_equal 3, result.size
-#   end
+      expect(result.size).to eq(3)
+    end
 
 #   def test_it_can_find_items
 #     repo = engine.merchant_repository

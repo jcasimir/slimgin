@@ -22,12 +22,6 @@ describe MerchantRepository do
     expect(found.id).to eq(1)
   end
 
-  # def test_it_contains_merchants
-  #   merchant_repo = MerchantRepository.new nil, "./test/fixtures/merchants.csv"
-
-  #   assert_kind_of Merchant, merchant_repo.id(1)
-  # end
-
   # def test_can_identify_top_X_merchants_by_revenue
   #   repo = engine.merchant_repository
 

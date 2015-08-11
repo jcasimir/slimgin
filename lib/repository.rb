@@ -53,6 +53,7 @@ class Repository
   def objects(data)
     data.map do |row|
       attributes = self.headers.zip(row).to_h
+      require 'pry';binding.pry
       my_type.new(attributes, self)
     end
   end

@@ -3,7 +3,7 @@ require_relative 'item'
 
 class ItemRepository < Repository
   def my_type
-    Item.new
+    Item
   end
 
   def find_by_id(id)

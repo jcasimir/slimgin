@@ -5,9 +5,9 @@ class InvoiceRepository < Repository
   attr_reader :successful_invoices,
               :successful_merchant_invoices,
               :successful_date_invoices
-              
+
   def my_type
-    Invoice.new
+    Invoice
   end
 
   # def create_successful_merchant_invoices

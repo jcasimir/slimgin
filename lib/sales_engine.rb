@@ -60,7 +60,7 @@ class SalesEngine
   end
 
   def invoices_for_a_merchant(merchant_id)
-    invoice_repository.find_all_by(merchant_id: merchant_id)
+    invoice_repository.find_all_by(:merchant_id, merchant_id)
   end
 
   def items_for_a_merchant(merchant_id)
