@@ -4,6 +4,7 @@ class LoaderDB
   attr_reader :db
 
   def initialize(args)
+    require 'pry'; binding.pry
     @db = args.fetch(:db)
     csv_loaders = args.fetch(:csv_loaders)
     add_tables
@@ -11,23 +12,24 @@ class LoaderDB
   end
 
   def add_tables
+    self.db.execute(create_headers_table)
     self.db.execute(create_customer_table)
     self.db.execute(create_merchant_table)
     self.db.execute(create_item_table)
     self.db.execute(create_invoice_item_table)
     self.db.execute(create_invoice_table)
     self.db.execute(create_transaction_table)
-    self.db.execute(create_headers_table)
   end
 
   def populate_tables(csv_loaders)
+    populate_headers_table(csv_loaders)
     populate_customer_table(csv_loaders)
     populate_merchant_table(csv_loaders)
     populate_item_table(csv_loaders)
     populate_invoice_item_table(csv_loaders)
     populate_invoice_table(csv_loaders)
     populate_transaction_table(csv_loaders)
-    populate_transaction_table(csv_loaders)
+    require 'pry'; binding.pry
   end
 
   def create_headers_table
@@ -38,6 +40,7 @@ CREATE TABLE Headers (
       );
 EOF
   end
+
 
   def create_customer_table
 build_table = <<-EOF
@@ -118,13 +121,20 @@ CREATE TABLE TransactionRepository (
 EOF
   end
 
-  def populate_header_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO CustomerRepository
-      (id, first_name, last_name, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?)" )
-    csv_loaders[:customer_repository].db.each do |row|
+  def populate_headers_table(csv_loaders)
+      statement = db.prepare( "INSERT INTO Headers
+      (repo, attributes)
+      VALUES (?, ?)" )
+    csv_loaders.keys.each do |repo_name|
+      repo = strip_suffix(repo_name)
+      attributes = csv_loaders[repo_name].headers.join","
+      row = [repo, attributes]
       statement.execute(row)
     end
+  end
+
+  def strip_suffix(repo_symbol)
+    repo_symbol.to_s.capitalize.gsub(/_repository/, "")
   end
 
   def populate_customer_table(csv_loaders)
@@ -178,7 +188,11 @@ EOF
         created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?)" )
     csv_loaders[:transaction_repository].db.each do |row|
+      begin
       statement.execute(row)
+      rescue e
+        require 'pry'; binding.pry
+      end
     end
   end
 

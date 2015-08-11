@@ -5,9 +5,18 @@ class Repository
                 :headers
 
   def initialize(engine)
-    headers_query = "SELECT * FROM Headers WHERE repo = #{self.class}"
-    @headers = engine.search(headers_query)
     @engine   = engine
+  end
+
+  def headers
+    result = engine.search(headers_query)
+     # ["Customer", "id,first_name,last_name,created_at,updated_at"]
+    # want result to be this=> "id,name,created_at,updated_at"
+    result.next.last.split.map {|x| x.to_sym}
+  end
+
+  def headers_query
+    "SELECT * FROM Headers WHERE repo = #{self.class}"
   end
 
   def all
