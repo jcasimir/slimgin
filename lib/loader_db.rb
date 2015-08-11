@@ -3,18 +3,14 @@ require 'SQLite3'
 class LoaderDB
   attr_reader :db
 
-  def initialize(csv_loaders) # needs an array and headers array accessible via loader_csv
-                              #    object
-    @db = create_db
-    add_tables(csv_loaders)
+  def initialize(args)
+    @db = args.fetch(:db)
+    csv_loaders = args.fetch(:csv_loaders)
+    add_tables
     populate_tables(csv_loaders)
   end
 
-  def create_db
-    SQLite3::Database.new " :memory: "
-  end
-
-  def add_tables(csv_loaders)
+  def add_tables
     self.db.execute(create_customer_table)
     self.db.execute(create_merchant_table)
     self.db.execute(create_item_table)
@@ -34,7 +30,7 @@ class LoaderDB
 
   def create_customer_table
 build_table = <<-EOF
-CREATE TABLE customer_repository (
+CREATE TABLE CustomerRepository (
       "id" int PRIMARY KEY,
       "first_name" varchar(30),
       "last_name" varchar(30),
@@ -46,7 +42,7 @@ EOF
 
   def create_merchant_table
 build_table = <<-EOF
-CREATE TABLE merchant_repository (
+CREATE TABLE MerchantRepository (
       "id" int PRIMARY KEY,
       "name" varchar(30),
       "created_at" datetime,
@@ -57,7 +53,7 @@ EOF
 
   def create_item_table
 build_table = <<-EOF
-CREATE TABLE item_repository (
+CREATE TABLE ItemRepository (
       "id" int PRIMARY KEY,
       "name" varchar(30),
       "description" varchar(300),
@@ -71,7 +67,7 @@ EOF
 
   def create_invoice_item_table
 build_table = <<-EOF
-CREATE TABLE invoice_item_repository (
+CREATE TABLE InvoiceItemRepository (
       "id" int PRIMARY KEY,
       "item_id" int,
       "invoice_id" int,
@@ -85,7 +81,7 @@ EOF
 
   def create_invoice_table
 build_table = <<-EOF
-CREATE TABLE invoice_repository (
+CREATE TABLE InvoiceRepository (
       "id" int PRIMARY KEY,
       "customer_id" int,
       "merchant_id" int,
@@ -99,7 +95,7 @@ EOF
 
   def create_transaction_table
 build_table = <<-EOF
-CREATE TABLE transaction_repository (
+CREATE TABLE TransactionRepository (
       "id" int PRIMARY KEY,
       "invoice_id" int,
       "credit_card_number" int,
@@ -112,7 +108,7 @@ EOF
   end
 
   def populate_customer_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO customer_repository
+    statement = db.prepare( "INSERT INTO CustomerRepository
       (id, first_name, last_name, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?)" )
     csv_loaders[:customer_repository].db.each do |row|
@@ -121,7 +117,7 @@ EOF
   end
 
   def populate_merchant_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO merchant_repository
+    statement = db.prepare( "INSERT INTO MerchantRepository
       (id, name, created_at, updated_at)
       VALUES (?, ?, ?, ?)" )
     csv_loaders[:merchant_repository].db.each do |row|
@@ -130,7 +126,7 @@ EOF
   end
 
   def populate_item_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO item_repository
+    statement = db.prepare( "INSERT INTO ItemRepository
       (id, name, description, unit_price, merchant_id, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?)" )
     csv_loaders[:item_repository].db.each do |row|
@@ -139,7 +135,7 @@ EOF
   end
 
   def populate_invoice_item_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO invoice_item_repository
+    statement = db.prepare( "INSERT INTO InvoiceItemRepository
       (id, item_id, invoice_id, quantity, unit_price, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?)" )
     csv_loaders[:invoice_item_repository].db.each do |row|
@@ -148,7 +144,7 @@ EOF
   end
 
   def populate_invoice_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO invoice_repository
+    statement = db.prepare( "INSERT INTO InvoiceRepository
       (id, customer_id, merchant_id, status, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?)" )
     csv_loaders[:invoice_repository].db.each do |row|
@@ -157,7 +153,7 @@ EOF
   end
 
   def populate_transaction_table(csv_loaders)
-    statement = db.prepare( "INSERT INTO transaction_repository
+    statement = db.prepare( "INSERT INTO TransactionRepository
       (id, invoice_id, credit_card_number, credit_card_expiration_date, result, 
         created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?)" )

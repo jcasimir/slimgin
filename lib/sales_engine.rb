@@ -33,7 +33,8 @@ class SalesEngine
 
   def startup
     loaded_csvs = locations.map { |repo, path| [repo, LoaderCSV.new(path)] }.to_h
-    self.db = LoaderDB.new(loaded_csvs)
+    self.db = create_db
+    LoaderDB.new(:db => self.db, :csv_loaders => loaded_csvs)
 
     @customer_repository     = CustomerRepository.new(self)
     @merchant_repository     = MerchantRepository.new(self)
@@ -41,6 +42,14 @@ class SalesEngine
     @transaction_repository  = TransactionRepository.new(self)
     @invoice_repository      = InvoiceRepository.new(self)
     @invoice_item_repository = InvoiceItemRepository.new(self)
+  end
+
+  def create_db
+    SQLite3::Database.new " :memory: "
+  end
+
+  def search(query)
+    self.db.query(query)
   end
 
   def invoices_for_a_merchant(merchant_id)

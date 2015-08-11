@@ -6,11 +6,16 @@ class LoaderDBTest < Minitest::Test
   def setup
     @se = SalesEngine.new
     @locations = @se.locations
+    @se.startup
   end
-  def test_it_creates_a_database_for_the_engine
-    loader = LoaderDB.new(@locations, @se)
 
-    assert_kind_of(SQLite3::Database, loader.db_handle, "db_handle is not a SQLite3 database as expected")
+  def test_it_creates_a_customer_repository
+    expected = [1, "Joey", "Ondricka", "2012-03-27 14:54:09 UTC", "2012-03-27 14:54:09 UTC"]
+    actual = @se.db.query("SELECT * FROM customer_repository WHERE id = 1")
   end
-  
+
+  # def test_it_creates_a_merchant_repository
+    
+  # end
+
 end
