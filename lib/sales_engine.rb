@@ -45,10 +45,17 @@ class SalesEngine
   end
 
   def create_db
-    SQLite3::Database.new " :memory: "
+    name = ""
+    10.times do 
+      name << [*'a'..'z'].sample
+    end
+
+
+    SQLite3::Database.new " #{name} "
   end
 
   def search(query)
+    # require 'pry';binding.pry
     self.db.query(query)
   end
 

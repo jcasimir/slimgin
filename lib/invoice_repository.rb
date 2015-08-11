@@ -5,10 +5,7 @@ class InvoiceRepository < Repository
   attr_reader :successful_invoices,
               :successful_merchant_invoices,
               :successful_date_invoices
-  def initialize(attributes, repository)
-    
-  end
-  
+              
   def my_type
     Invoice.new
   end

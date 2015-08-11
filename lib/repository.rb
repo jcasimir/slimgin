@@ -10,13 +10,14 @@ class Repository
 
   def headers
     result = engine.search(headers_query)
+    # require 'pry';binding.pry
      # ["Customer", "id,first_name,last_name,created_at,updated_at"]
     # want result to be this=> "id,name,created_at,updated_at"
-    result.next.last.split.map {|x| x.to_sym}
+    result.next.last.split(",").map {|x| x.to_sym}
   end
 
   def headers_query
-    "SELECT * FROM Headers WHERE repo = #{self.class}"
+    "SELECT * FROM Headers WHERE repo = '#{self.class}'"
   end
 
   def all
@@ -44,14 +45,14 @@ class Repository
   end
 
   def find_all_by(category, item)
-    query = "SELECT * FROM #{self.class} WHERE #{category.to_s} = #{item}"
-    rows = engine.search(query)
+    query = "SELECT * FROM #{self.class} WHERE #{category.to_s} = '#{item}'"
+    rows = engine.search(query).to_a
     objects(rows) if !(rows.empty?)
   end
 
   def objects(data)
     data.map do |row|
-      attributes = self.headers.zip(data).to_h
+      attributes = self.headers.zip(row).to_h
       my_type.new(attributes, self)
     end
   end

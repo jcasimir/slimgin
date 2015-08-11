@@ -1,15 +1,46 @@
-require_relative 'test_helper'
+# require_relative 'test_helper'
 require_relative '../lib/merchant'
 require_relative '../lib/sales_engine'
 
+  describe Merchant do
+    before do
+      # unless @@flag == true
+      @engine = SalesEngine.new("./test/fixtures")
+      @engine.startup
+      # @@flag = true
+    # end
+    end
+
+    it "knows what name it has" do
+      merchant = Merchant.new nil, name: "Alice"
+
+      assert_equal "Alice", merchant.name
+
+    end
+
+    it "does not go berserk when w00ted up to 5 times" do
+      1.upto(5) { @player.w00t }
+
+      expect(@player.berserk?).to eq(false)
+    end
+
+    it "gets w00ted instead of blammed when it's gone berserk" do
+      1.upto(6) { @player.w00t }
+      (1..2).each { @player.blam }
+
+      expect(@player.health).to eq(@initial_health + (8 * 15))
+    end
+  end
+
 class MerchantSpec < Minitest::Spec
-  attr_reader :engine
+  # attr_reader :engine
+
   @@flag = nil
 
   before do
-    unless @@flag
-      @engine = SalesEngine.new("./test/fixtures")
-      engine.startup
+    unless @@flag == true
+      @@engine = SalesEngine.new("./test/fixtures")
+      @@engine.startup
       @@flag = true
     end
   end
@@ -23,7 +54,6 @@ class MerchantSpec < Minitest::Spec
     merchant = Merchant.new nil, name: "Alice"
 
     assert_equal "Alice", merchant.name
-    @engine.db.close
   end
 
   def test_it_can_find_invoices
@@ -32,7 +62,6 @@ class MerchantSpec < Minitest::Spec
     result = merchant.invoices
 
     assert_equal 3, result.size
-    @engine.db.close
   end
 
   def test_it_can_find_items
@@ -41,7 +70,6 @@ class MerchantSpec < Minitest::Spec
     result = merchant.items
 
     assert_equal 15, result.size
-    @engine.db.close
   end
 
   def test_it_can_find_its_revenue
@@ -50,7 +78,6 @@ class MerchantSpec < Minitest::Spec
     result = merchant.revenue
 
     assert_equal 21067.77, result
-    @engine.db.close
   end
 
   # def test_it_can_find_its_total_items

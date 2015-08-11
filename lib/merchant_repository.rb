@@ -8,7 +8,7 @@ class MerchantRepository < Repository
   end
 
   def find_by_id(id)
-    id(id)
+    find_by(:id, id)
   end
 
   def find_by_name(name)

@@ -4,7 +4,6 @@ class LoaderDB
   attr_reader :db
 
   def initialize(args)
-    require 'pry'; binding.pry
     @db = args.fetch(:db)
     csv_loaders = args.fetch(:csv_loaders)
     add_tables
@@ -29,7 +28,6 @@ class LoaderDB
     populate_invoice_item_table(csv_loaders)
     populate_invoice_table(csv_loaders)
     populate_transaction_table(csv_loaders)
-    require 'pry'; binding.pry
   end
 
   def create_headers_table
@@ -126,15 +124,15 @@ EOF
       (repo, attributes)
       VALUES (?, ?)" )
     csv_loaders.keys.each do |repo_name|
-      repo = strip_suffix(repo_name)
+      repo = convert_repo_symbol(repo_name)
       attributes = csv_loaders[repo_name].headers.join","
       row = [repo, attributes]
       statement.execute(row)
     end
   end
 
-  def strip_suffix(repo_symbol)
-    repo_symbol.to_s.capitalize.gsub(/_repository/, "")
+  def convert_repo_symbol(repo)
+    repo.to_s.split("_").map { |x| x.capitalize }.join.gsub(/_/, "")
   end
 
   def populate_customer_table(csv_loaders)
@@ -188,12 +186,7 @@ EOF
         created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?)" )
     csv_loaders[:transaction_repository].db.each do |row|
-      begin
       statement.execute(row)
-      rescue e
-        require 'pry'; binding.pry
       end
-    end
   end
-
 end
