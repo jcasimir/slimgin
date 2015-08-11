@@ -11,11 +11,11 @@ class LoaderDBTest < Minitest::Test
 
   def test_it_creates_a_customer_repository
     expected = [1, "Joey", "Ondricka", "2012-03-27 14:54:09 UTC", "2012-03-27 14:54:09 UTC"]
-    actual = @se.db.query("SELECT * FROM customer_repository WHERE id = 1")
+    actual = @se.db.query("SELECT * FROM CustomerRepository WHERE id = 1")
   end
 
   # def test_it_creates_a_merchant_repository
-    
+
   # end
 
 end

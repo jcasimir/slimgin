@@ -3,8 +3,8 @@ require_relative 'repository'
 
 class TransactionRepository < Repository
 
-  def my_type(repository, attributes)
-    Transaction.new(repository, attributes)
+  def my_type
+    Transaction
   end
 
   def find_by_id(id)

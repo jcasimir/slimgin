@@ -10,27 +10,13 @@ class Repository
   end
 
   def all
-    database
+    query = "SELECT * FROM #{self.class}"
+    results = engine.search(query)
+    objects(results)
   end
 
   def random
-    id = database.keys.sample
-    database[id]
-  end
-
-  def find_by(search_attribute)
-    find_all_by(search_attribute)[0]
-  end
-
-  def find_all_by(search_attribute)
-    table = get_table(self)
-    key = search_attribute.keys[0]
-    value = search_attribute.values[0]
-    out = {}
-    database.each do |id, attributes|
-      out[id] = attributes if attributes.send(key) == value
-    end
-    out.values
+    all.sample
   end
 
   def id (id_number)
@@ -45,7 +31,38 @@ class Repository
     self.class.to_lower.insert("_", -11)
   end
 
+    def find_by(category, item)
+    rows = repository.select do |row|
+      row[category.to_sym].downcase == item.downcase
+    end
+    objects(rows).first if !(rows.empty?)
+  end
+
+  def find_all_by(category, item)
+    rows = repository.select do |row|
+      unless row[category.to_sym].nil?
+        row[category.to_sym].downcase == item.downcase
+      end
+    end
+    objects(rows) if !(rows.empty?)
+  end
+
+  def objects(data)
+    data.map do |row|
+      row[:repository] = self
+      holds_type.new(row)
+    end
+  end
+
+  def find_prefix
+    "find_by_".length
+  end
+
+  def find_all_prefix
+    "find_all_by_".length
+  end
 end
+
 
 
 
@@ -92,34 +109,4 @@ end
 #     }
 #   end
 
-#   def find_by(category, item)
-#     rows = repository.select do |row|
-#       row[category.to_sym].downcase == item.downcase
-#     end
-#     objects(rows).first if !(rows.empty?)
-#   end
 
-#   def find_all_by(category, item)
-#     rows = repository.select do |row|
-#       unless row[category.to_sym].nil?
-#         row[category.to_sym].downcase == item.downcase
-#       end
-#     end
-#     objects(rows) if !(rows.empty?)
-#   end
-
-#   def objects(data)
-#     data.map do |row|
-#       row[:repository] = self
-#       holds_type.new(row)
-#     end
-#   end
-
-#   def find_prefix
-#     "find_by_".length
-#   end
-
-#   def find_all_prefix
-#     "find_all_by_".length
-#   end
-# end

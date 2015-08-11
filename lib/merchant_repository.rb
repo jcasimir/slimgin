@@ -3,8 +3,8 @@ require_relative 'repository'
 
 class MerchantRepository < Repository
 
-  def my_type(repository, attributes)
-    Merchant.new(repository, attributes)
+  def my_type
+    Merchant
   end
 
   def find_by_id(id)

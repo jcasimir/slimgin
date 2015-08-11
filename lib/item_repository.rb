@@ -2,8 +2,8 @@ require_relative "./repository"
 require_relative 'item'
 
 class ItemRepository < Repository
-  def my_type(repository, attributes)
-    Item.new(repository, attributes)
+  def my_type
+    Item.new
   end
 
   def find_by_id(id)

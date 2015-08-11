@@ -3,8 +3,8 @@ require_relative 'repository'
 require_relative "customer"
 
 class CustomerRepository < Repository
-  def my_type(repository, attributes)
-    Customer.new(repository, attributes)
+  def my_type
+    Customer
   end
 
   def find_by_id(id)

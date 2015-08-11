@@ -6,14 +6,24 @@ class SalesEngineSpec < Minitest::Spec
 
   before do
     unless @@flag
-      @se = SalesEngine.new("./data/fixtures")
-      @se.startup
+      @@se = SalesEngine.new("./data/fixtures")
+      @@se.startup
       @@flag = true
     end
   end
 
   def test_it_creates_a_database_for_itself
-    assert_kind_of(SQLite3::Database, @se.db, "db is not a SQLite3 database as expected")
+    assert_kind_of(SQLite3::Database, @@se.db, "db is not a SQLite3 database as expected")
+  end
+
+  def test_it_brokers_queries_returning_search_results_object
+    ii_id = 14
+    query = "SELECT * FROM InvoiceItemRepository WHERE id = 14"
+    
+    expected = [14,1920,3,7,4264,"2012-03-27 14:54:09 UTC","2012-03-27 14:54:09 UTC"]
+    actual = @@se.search(query).next
+
+    assert_equal expected, actual
   end
 
 

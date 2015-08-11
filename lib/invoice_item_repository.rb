@@ -1,16 +1,11 @@
-require_relative "repository"
+require_relative 'repository'
 require_relative 'invoice_item'
 
 class InvoiceItemRepository < Repository
   attr_reader :successful_invoice_items
 
-  def initialize(engine)
-    super
-    # @successful_invoice_items ||= create_successful_invoice_items
-  end
-
-  def my_type(repository, attributes)
-    InvoiceItem.new(repository, attributes)
+  def my_type
+    InvoiceItem
   end
 
   def create_successful_invoice_items
