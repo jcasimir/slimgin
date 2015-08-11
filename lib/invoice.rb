@@ -1,9 +1,10 @@
-require_relative 'data_instance'
-
-class Invoice < DataInstance
-  attr_reader :customer_id,
+class Invoice
+  attr_reader :id,
+              :customer_id,
               :merchant_id,
-              :status
+              :status,
+              :created_at,
+              :updated_at
 
   def customer
     customer_repository.id(customer_id)

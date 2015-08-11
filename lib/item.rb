@@ -1,10 +1,11 @@
-require_relative 'data_instance'
-
-class Item < DataInstance
-  attr_reader :name,
+class Item
+  attr_reader :id,
+              :name,
               :description,
               :unit_price,
-              :merchant_id
+              :merchant_id,
+              :created_at,
+              :updated_at
 
   def initialize(repository, attributes)
     super

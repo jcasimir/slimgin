@@ -17,6 +17,7 @@ class LoaderDB
     self.db.execute(create_invoice_item_table)
     self.db.execute(create_invoice_table)
     self.db.execute(create_transaction_table)
+    self.db.execute(create_headers_table)
   end
 
   def populate_tables(csv_loaders)
@@ -26,6 +27,16 @@ class LoaderDB
     populate_invoice_item_table(csv_loaders)
     populate_invoice_table(csv_loaders)
     populate_transaction_table(csv_loaders)
+    populate_transaction_table(csv_loaders)
+  end
+
+  def create_headers_table
+<<-EOF
+CREATE TABLE Headers (
+      "repo" varchar(30) PRIMARY KEY,
+      "attributes" varchar(100)
+      );
+EOF
   end
 
   def create_customer_table
@@ -105,6 +116,15 @@ CREATE TABLE TransactionRepository (
       "updated_at" datetime
       );
 EOF
+  end
+
+  def populate_header_table(csv_loaders)
+    statement = db.prepare( "INSERT INTO CustomerRepository
+      (id, first_name, last_name, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?)" )
+    csv_loaders[:customer_repository].db.each do |row|
+      statement.execute(row)
+    end
   end
 
   def populate_customer_table(csv_loaders)

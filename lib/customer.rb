@@ -1,8 +1,18 @@
-require_relative 'data_instance'
-
-class Customer < DataInstance
-  attr_reader :first_name,
+class Customer
+  attr_reader :id,
+              :first_name,
               :last_name
+              :created_at,
+              :updated_at
+
+  def initialize(repository, row)
+    @id          = record[:id]
+    @first_name  = record[:first_name]
+    @last_name   = record[:last_name]
+    @created_at  = record[:created_at]
+    @updated_at  = record[:updated_at]
+    @repository  = repository
+  end
 
   def invoices
     repository.invoices_for_customer(id)

@@ -1,12 +1,12 @@
 require "csv"
 
 class Repository
-  attr_accessor :engine,
-                :headers
+  attr_accessor :engine#,
+                # :headers
 
   def initialize(engine)
-    @headers = []
-    @engine   ||= engine
+    # @headers = []
+    @engine   = engine
   end
 
   def all
@@ -29,13 +29,12 @@ class Repository
   end
 
   def find_by(category, item)
-    query = "SELECT * FROM #{self.class} WHERE #{category} = #{item}"
-    rows = engine.search(query)
-    objects(rows).first if !(rows.empty?)
+    objects = find_all_by(category, item)
+    objects.first if !(objects.empty?)
   end
 
   def find_all_by(category, item)
-    query = "SELECT * FROM #{self.class} WHERE #{category} = #{item}"
+    query = "SELECT * FROM #{self.class} WHERE #{category.to_s} = #{item}"
     rows = engine.search(query)
     objects(rows) if !(rows.empty?)
   end

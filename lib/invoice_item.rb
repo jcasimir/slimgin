@@ -1,14 +1,15 @@
-require_relative "data_instance"
 require "bigdecimal"
 
-class InvoiceItem < DataInstance
-  attr_reader :item_id,
+class InvoiceItem
+  attr_reader :id,
+              :item_id,
               :invoice_id,
               :quantity,
-              :unit_price
+              :unit_price,
+              :created_at,
+              :updated_at
 
   def initialize(repository, attributes)
-    super
     @unit_price = BigDecimal.new(unit_price) / 100
   end
 

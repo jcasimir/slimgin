@@ -1,7 +1,8 @@
-require_relative "data_instance"
-
-class Merchant < DataInstance
-  attr_accessor :name
+class Merchant
+  attr_accessor :id,
+                :name,
+                :created_at,
+                :updated_at
 
   def invoices
     repository.invoices_for_a_merchant(id)
