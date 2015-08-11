@@ -1,11 +1,12 @@
 require "csv"
 
 class Repository
-  attr_accessor :engine#,
-                # :headers
+  attr_accessor :engine,
+                :headers
 
   def initialize(engine)
-    # @headers = []
+    headers_query = "SELECT * FROM Headers WHERE repo = #{self.class}"
+    @headers = engine.search(headers_query)
     @engine   = engine
   end
 
@@ -41,7 +42,8 @@ class Repository
 
   def objects(data)
     data.map do |row|
-      my_type.new(row)
+      attributes = self.headers.zip(data).to_h
+      my_type.new(attributes, self)
     end
   end
 

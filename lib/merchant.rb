@@ -2,7 +2,16 @@ class Merchant
   attr_accessor :id,
                 :name,
                 :created_at,
-                :updated_at
+                :updated_at,
+                :repository
+
+  def initialize(attributes, repository)
+    @id          = attributes[:id]
+    @name        = attributes[:name]
+    @created_at  = attributes[:created_at]
+    @updated_at  = attributes[:updated_at]
+    @repository  = repository
+  end
 
   def invoices
     repository.invoices_for_a_merchant(id)

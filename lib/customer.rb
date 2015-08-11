@@ -3,14 +3,15 @@ class Customer
               :first_name,
               :last_name
               :created_at,
-              :updated_at
+              :updated_at,
+              :repository
 
-  def initialize(repository, row)
-    @id          = record[:id]
-    @first_name  = record[:first_name]
-    @last_name   = record[:last_name]
-    @created_at  = record[:created_at]
-    @updated_at  = record[:updated_at]
+  def initialize(attributes, repository)
+    @id          = attributes[:id]
+    @first_name  = attributes[:first_name]
+    @last_name   = attributes[:last_name]
+    @created_at  = attributes[:created_at]
+    @updated_at  = attributes[:updated_at]
     @repository  = repository
   end
 

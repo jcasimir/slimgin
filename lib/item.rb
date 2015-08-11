@@ -5,11 +5,18 @@ class Item
               :unit_price,
               :merchant_id,
               :created_at,
-              :updated_at
+              :updated_at,
+              :repository
 
-  def initialize(repository, attributes)
-    super
-    @unit_price = BigDecimal.new(unit_price) / 100
+  def initialize(attributes, repository)
+    @id          = attributes[:id]
+    @name        = attributes[:name]
+    @description = attributes[:description]
+    @unit_price  = BigDecimal.new(attributes[:unit_price]) / 100
+    @merchant_id = attributes[:merchant_id]
+    @created_at  = attributes[:created_at]
+    @updated_at  = attributes[:updated_at]
+    @repository  = repository
   end
 
   def invoice_items

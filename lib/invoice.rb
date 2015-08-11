@@ -4,7 +4,18 @@ class Invoice
               :merchant_id,
               :status,
               :created_at,
-              :updated_at
+              :updated_at,
+              :repository
+
+  def initialize(attributes, repository)
+    @id           = attributes[:id]
+    @customer_id  = attributes[:customer_id]
+    @merchant_id  = attributes[:merchant_id]
+    @status       = attributes[:status]
+    @created_at   = attributes[:created_at]
+    @updated_at   = attributes[:updated_at]
+    @repository   = repository
+  end
 
   def customer
     customer_repository.id(customer_id)
