@@ -11,7 +11,7 @@ describe Customer do
       :created_at => "sometime",
       :updated_at => "someothertime"
     }
-    @customer = Customer.new(@example_records1, nil)
+    @customer = Customer.new(@example_record1, nil)
     @se = SalesEngine.new('./data/fixtures')
     @se.startup
   end
