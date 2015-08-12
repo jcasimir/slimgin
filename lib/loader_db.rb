@@ -1,5 +1,3 @@
-require 'SQLite3'
-
 class LoaderDB
   attr_reader :db
 
