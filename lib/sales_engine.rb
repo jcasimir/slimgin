@@ -6,7 +6,7 @@ require_relative "merchant_repository"
 require_relative "transaction_repository"
 require_relative "loader_csv"
 require_relative "loader_db"
-require 'sqlite3'
+require 'SQLite3'
 
 class SalesEngine
   FILE_PATH = "../sales_engine/data"
